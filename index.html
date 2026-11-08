@@ -31,7 +31,7 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
 #score{font-family:var(--display);font-size:52px;line-height:1;color:#ff9a1a;--sw:9px;--ss:rgba(60,20,90,.45);font-variant-numeric:tabular-nums}
 #candy{position:absolute;top:14px;left:max(12px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:6px;
-  padding:4px 12px 4px 6px;border-radius:99px;background:rgba(0,0,0,.25);pointer-events:none;transition:transform .12s}
+  padding:3px 12px 3px 5px;border-radius:99px;background:linear-gradient(#ff8ac4,#e0408e);border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.28);pointer-events:none;transition:transform .12s}
 #candy.bump{transform:scale(1.18)}
 /* the candy beats now and then, like a heart (as in the original game) */
 #candy svg{animation:candyBeat 5.5s ease-in-out infinite}
@@ -42,7 +42,7 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 .chip.slow{background:#2a8fe0}.chip.endless{background:#7a4ae0}.chip.fast{background:#e8262c;animation:pulse .5s ease-in-out infinite}
 .chip{font:600 13px var(--body);padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.28);color:#fff;letter-spacing:.04em}
 #mute{position:absolute;top:12px;right:max(12px,env(safe-area-inset-right,0px));width:40px;height:40px;border-radius:50%;
-  border:0;background:rgba(0,0,0,.22);color:#fff;font:600 18px var(--body);cursor:pointer;display:grid;place-items:center}
+  border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#8ff07a,#2fae2c 60%,#1c6a1a);color:#fff;font:600 18px var(--body);cursor:pointer;display:grid;place-items:center}
 #mute:focus-visible,button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -220,9 +220,14 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #doors.closed .lock{scale:1;transition-delay:.3s}
 .lock svg{width:100%;height:100%;animation:spin 1.2s linear infinite;filter:drop-shadow(0 8px 14px rgba(120,20,0,.35))}
 #pauseBtn{position:absolute;top:12px;right:calc(max(12px,env(safe-area-inset-right,0px)) + 48px);width:40px;height:40px;border-radius:50%;
-  border:0;background:rgba(0,0,0,.22);cursor:pointer;display:grid;place-items:center}
+  border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#7ab8ff,#3a6ae0 60%,#1a3a9a);cursor:pointer;display:grid;place-items:center}
 #gameBtns{position:absolute;top:58px;left:max(12px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:8px}
-#gameBtns button{position:relative;width:40px;height:40px;border-radius:50%;border:0;background:rgba(0,0,0,.25);cursor:pointer;display:grid;place-items:center}
+#gameBtns button{position:relative;width:40px;height:40px;border-radius:50%;border:3px solid #fff;cursor:pointer;display:grid;place-items:center}
+#tReset{background:linear-gradient(#ff7a6a,#e8263a);box-shadow:0 2px 0 #8c0c12}   /* erasing is the one red button */
+#gLooks{background:radial-gradient(circle at 40% 30%,#c79aff,#8a46e0 60%,#5a1ab8)}#gShop{background:radial-gradient(circle at 40% 30%,#ffc070,#f2760a 60%,#a84a00)}
+/* the in-game buttons are small candies too: a lip below, a shine on top, a touch see-through so the game shows */
+#mute,#pauseBtn,#gameBtns button{box-shadow:0 3px 0 rgba(0,0,0,.28);opacity:.95}
+#mute::after,#pauseBtn::after,#gameBtns button::after{content:"";position:absolute;left:16%;top:8%;width:52%;height:24%;border-radius:50%;background:rgba(255,255,255,.38);pointer-events:none}
 #album,#shop{background:rgba(20,10,40,.55);z-index:5}
 .btn-small.pink{background:radial-gradient(circle at 40% 30%,#ff9ad0,#e0408e 60%,#a01a5e)}
 .shopHead{display:flex;align-items:center;gap:12px}
