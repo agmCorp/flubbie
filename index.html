@@ -1089,7 +1089,7 @@ function updateLoops(){
 }
 /* interface sounds */
 document.addEventListener("click", e=>{ if(e.target.closest && e.target.closest("button")) sfx("ButtonClick",.6); }, true);
-{ const panels = ["album","shop","settings","levels","credits","pause"].map(id=>document.getElementById(id));
+{ const panels = ["album","shop","settings","levels","credits","pause","over","win","end"].map(id=>document.getElementById(id));
   const mo = new MutationObserver(list=>{ for(const m of list){ if(!m.target.hidden) sfx("PanelIn", .7); } });
   panels.forEach(el=>el && mo.observe(el,{attributes:true, attributeFilter:["hidden"]})); }
 muteBtn.addEventListener("click", e=>{ e.stopPropagation(); muted=!muted; paintMute(); save("flubble-mute",muted?1:0); syncMusic(); });
@@ -1494,7 +1494,7 @@ function launch(boost){
 }
 const QUICK = .9;   // jump within this many seconds of landing to keep a streak
 function jump(){
-  if(introCard){ if(introCard.t > .35){ const q = introCard.sfx; introCard = null; if(q) q.forEach(f=>f()); } return; }   // a tap closes the power card, it never jumps
+  if(introCard){ if(introCard.t > .35 && introCard.out==null){ introCard.out = 0; sfx("PanelOut",.7); } return; }   // a tap sends the power card away, it never jumps
   if(state!=="play" || player.fly || player.boostLeft>0) return;
   if(curTip){ tipsDone.add(curTip); try{ localStorage.setItem("flubble-tips", JSON.stringify([...tipsDone])); }catch(e){} curTip = null; }
   if(player.ring>0){
@@ -1603,6 +1603,7 @@ function applyItem(it, ring){
   if(card) heldSfx = [];
   try{ applyItemNow(it, ring); }
   finally{ if(card && introCard) introCard.sfx = heldSfx; else if(heldSfx) heldSfx.forEach(f=>f()); heldSfx = null; }
+  if(card && introCard) sfx("PanelIn",.7);
 }
 function applyItemNow(it, ring){
   const x = ring.x, y = ring.y;
@@ -2612,15 +2613,26 @@ const POWER_INFO = {
   rain:["Candy rain","Catch the candies falling from the sky!"], fog:["No guide","The dotted guide hides for a few rings.",1],
   wobble:["Wobbly rings","The next rings slide side to side.",1], gift:["Gift box","Unlocks something new in the shop!"], blast:["Shockwave","Blows every monster off the screen!"]
 };
+/* the panels' fly-in and drop-away (panelIn / panelOut in the styles), for cards drawn on the canvas: offset from the resting place */
+const easeIO = k=> k<.5 ? 2*k*k : 1-2*(1-k)*(1-k);
+function panelSeg(u, u0, u1, y0, y1, ease){ return y0 + (y1-y0)*ease((u-u0)/(u1-u0)); }
+function panelInY(t, d){
+  const u = t/.62;
+  return u>=1 ? 0 : u<.55 ? panelSeg(u,0,.55,d,-26,k=>k*k) : u<.72 ? panelSeg(u,.55,.72,-26,9,easeIO) : u<.86 ? panelSeg(u,.72,.86,9,-4,easeIO) : panelSeg(u,.86,1,-4,0,easeIO);
+}
+function panelOutY(t, d){
+  const u = Math.min(1, t/.46);
+  return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k*k);
+}
 function drawIntroCard(){
   if(!introCard) return;
-  const [title, line, bad] = POWER_INFO[introCard.it], t = introCard.t;
-  const k = clamp(t/.3,0,1), e = 1-Math.pow(1-k,3), a = k;
-  ctx.save(); ctx.globalAlpha = a*.45; ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H); ctx.globalAlpha = a;
-  const cw = Math.min(W-36, 300), ch = 232, cx = W/2, cy = H*.42 + (1-e)*40;
+  const [title, line, bad] = POWER_INFO[introCard.it], t = introCard.t, out = introCard.out;
+  const a = out==null ? clamp(t/.3,0,1) : 1-clamp(out/.46,0,1), dy = out==null ? panelInY(t, H) : panelOutY(out, H);
+  ctx.save(); ctx.globalAlpha = a*.45; ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H); ctx.globalAlpha = 1;
+  const cw = Math.min(W-36, 300), ch = 232, cx = W/2, cy = H*.42 + dy;
   ctx.fillStyle = bad ? "#3a0e14" : "#fff6e6"; ctx.strokeStyle = bad ? "#ff6a5a" : "#e9c993"; ctx.lineWidth = 6;
   rr(cx-cw/2, cy-ch/2, cw, ch, 26); ctx.fill(); ctx.stroke();
-  ctx.save(); ctx.translate(cx, cy-62); const s2 = (.6+.4*e)*1.7; ctx.scale(s2,s2); drawItem(introCard.it, "cupcake"); ctx.restore();
+  ctx.save(); ctx.translate(cx, cy-62); ctx.scale(1.7,1.7); drawItem(introCard.it, "cupcake"); ctx.restore();
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
   ctx.fillStyle = bad ? "#ff8a7a" : "#c2370f"; ctx.font = '400 26px "Lilita One", system-ui'; ctx.fillText((bad?"Uh oh! ":"New! ") + title, cx, cy+6);
   ctx.fillStyle = bad ? "#ffe0dc" : "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
@@ -4710,7 +4722,9 @@ function frame(now){
   if(state==="over" && !over.hidden) paintHero($("fHero"), over.classList.contains("record") ? "happy" : "cry", outfitLook(), 2.1, 220, 100);
   updateLoops();
   if(paused){ T += dt; paintSleep(); }
-  else if(introCard){ introCard.t += dt; }   // the game waits until the player closes the power card
+  else if(introCard){   // the game waits until the player closes the power card and it has dropped away
+    introCard.t += dt;
+    if(introCard.out!=null && (introCard.out += dt) >= .46){ const q = introCard.sfx; introCard = null; if(q) q.forEach(f=>f()); } }
   else if(eatStop>0){ eatStop -= dt; updateCompanions(dt); }   // the world holds still while the friend lunges
   else update(dt);
   render();
