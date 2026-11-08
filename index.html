@@ -303,18 +303,20 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @media (prefers-reduced-motion:reduce){.sheet.panelIn,.sheet.panelOut{animation-duration:.01s}}
 .sheet h2{margin:0;font:400 34px var(--display);color:#c2370f}
 .sheet .sub{margin:0;font-size:14px;font-weight:500;max-width:34ch}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;width:100%}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:1fr;gap:8px;width:100%}   /* every tile the same size */
+.item>span{white-space:nowrap}.item .buy,.item.mystery .hint{margin-top:auto}
 .look{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 8px;border-radius:16px;border:3px solid transparent;cursor:pointer;font:600 12px var(--body);color:#5b3210}
 .look canvas,.look img{width:64px;height:64px}
 .look.locked{cursor:default;color:#9a7a5a}
 .look.on{border-color:#2fae2c;background:#fff}
 .pill{border:0;background:var(--red);color:#fff;font:400 20px var(--display);padding:8px 28px;border-radius:99px;cursor:pointer;box-shadow:0 4px 0 var(--red-deep)}
-#pause{background:rgba(10,10,40,.55);cursor:pointer}
+/* a spotlight on the pause and fail cards: clear in the middle, dark at the edges */
+#pause{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,.25),rgba(10,5,30,.85));cursor:pointer}
 #sleepCube{width:96px;height:96px;margin:-4px 0 -6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.8}}
 
-#over{background:rgba(30,30,30,.25)}
+#over{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,.1),rgba(10,5,30,.7));overflow:hidden}
 .card{position:relative;width:min(86%,330px);background:var(--candyPanel);border:6px solid #fff;
   border-radius:34px;padding:58px 20px 26px;box-shadow:var(--candyRim);
   display:flex;flex-direction:column;align-items:center;gap:14px;animation:panelIn .62s both}
@@ -359,6 +361,15 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .btn-small.green{background:radial-gradient(circle at 40% 30%,#8ff07a,#2fae2c 60%,#1c6a1a)}
 .btn-small.blue{background:radial-gradient(circle at 40% 30%,#5ab8ff,var(--blue) 60%,#14549a)}
 #win,#end{background:rgba(0,0,0,.08)}
+/* golden rays turning slowly behind the win, the prize and the new record, with a warm glow and twinkling sparkles */
+#win,#over.record{overflow:hidden;background:radial-gradient(circle,rgba(255,230,140,.6),rgba(255,230,140,0) 45%),rgba(40,20,80,.3)}
+#win::before,#over.record::before{content:"";position:absolute;left:50%;top:50%;width:1400px;height:1400px;margin:-700px 0 0 -700px;pointer-events:none;
+  background:repeating-conic-gradient(rgba(255,240,170,.6) 0 9deg,rgba(255,240,170,0) 9deg 22.5deg);
+  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);animation:raysTurn 24s linear infinite}
+#win::after,#over.record::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 16%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 84% 12%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 90% 58%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 10% 66%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 30% 88%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 74% 86%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 50% 8%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px);animation:twinkle 1.1s ease-in-out infinite alternate}
+#win .card,#over.record .card{z-index:1}
+@keyframes raysTurn{to{rotate:360deg}}
+@keyframes twinkle{from{opacity:.35}to{opacity:1}}
 /* after the grand finale: the party keeps going until a tap, then The End rises as a compact sheet with the party still visible above */
 #finTap{position:absolute;inset:0;z-index:6;border:0;background:transparent;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
 #finTap[hidden]{display:none}
@@ -398,7 +409,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newlook{font-family:var(--display);font-size:22px;color:#a35f00}
 .hint{font-family:var(--display);font-size:19px;margin-top:-6px}
 .hint.red{color:#b3241b}.hint.green{color:#2f7a22}
-@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut,#candy svg,.btn-retry{animation:none}}
+@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut,#candy svg,.btn-retry,#win::before,#over.record::before,#win::after,#over.record::after{animation:none}}
 #splash{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:grid;place-items:center;transition:opacity .45s ease;-webkit-tap-highlight-color:transparent}
 #splash img{width:min(68vw,320px);height:auto;opacity:0;animation:splashLogo .9s ease-out .25s forwards}
 .ghostPill{padding:10px 26px;border-radius:99px;border:2px solid rgba(255,255,255,.55);color:#fff;font:600 16px var(--body);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
@@ -2653,7 +2664,7 @@ const POWER_INFO = {
   candy:["Candies","Spend them in the shop!"], bonbon:["Sweet treat","It bursts into lots of candies!"],
   ball:["Power ball","Rockets you up several rings!"], shield:["Shield","Bounces you back from one hit."],
   slow:["Slow clock","Monsters and your ring timer slow down."], fast:["Fast clock","Careful! Monsters speed up.",1],
-  potion:["Tiny potion","Shrink down and slip through gaps."], friend:["Monster friend","Eats one monster for you!"],
+  potion:["Tiny potion","Shrink down and slip through gaps."], friend:["Monster pal","Eats one monster for you!"],
   magnet:["Magnet","Pulls in the candies on the rings ahead."], freeze:["Freeze","Monsters stop. Fly through and smash them!"],
   rain:["Candy rain","Catch the candies falling from the sky!"], fog:["No guide","The dotted guide hides for a few rings.",1],
   wobble:["Wobbly rings","The next rings slide side to side.",1], gift:["Gift box","Unlocks something new in the shop!"], blast:["Shockwave","Blows every monster off the screen!"]
@@ -4000,7 +4011,7 @@ const PETS = [
 ];
 const BOOSTS = [
   {id:"shield",name:"Shield",price:30},{id:"tiny",name:"Tiny potion",price:25},{id:"clock",name:"Slow clock",price:30},{id:"boost",name:"Power ball",price:40},
-  {id:"magnet",name:"Magnet",price:35},{id:"freeze",name:"Freeze",price:50},{id:"rain",name:"Candy rain",price:30},{id:"friend",name:"Monster friend",price:45},{id:"blast",name:"Shockwave",price:50}
+  {id:"magnet",name:"Magnet",price:35},{id:"freeze",name:"Freeze",price:50},{id:"rain",name:"Candy rain",price:30},{id:"friend",name:"Monster pal",price:45},{id:"blast",name:"Shockwave",price:50}
 ];
 const BOOST_ICON = {shield:"shield", tiny:"potion", clock:"slow", boost:"ball", magnet:"magnet", freeze:"freeze", rain:"rain", friend:"friend", blast:"blast"};
 let pendingBoosts = false;
@@ -4445,8 +4456,7 @@ function renderShop(){
     } else if(shopTab==="boosts"){
       paintBoost(c, it.id);
       const have = shop.boosts[it.id]||0;
-      if(!have && (state==="play"||state==="rising")) nm.textContent = `${it.name} (use now)`;
-      const note = have ? `${have} ready, one per run` : it.id==="boost" ? "Jumps 3 rings for you" : "";
+      const note = have ? `${have} ready` : (state==="play"||state==="rising") ? "Use it now" : it.id==="boost" ? "Jumps 3 rings" : "";
       if(note){ const sm = document.createElement("small"); sm.className = "note"; sm.textContent = note; card.appendChild(sm); }
       btn.textContent = price ? `Buy · ${price}` : "Get free"; btn.disabled = !god && candies < price;
       btn.addEventListener("click", ()=>{ if(!god && candies<price) return; setCandies(candies-price); shop.boosts[it.id]=(shop.boosts[it.id]||0)+1; saveShop(); SFX.pick();
