@@ -29,8 +29,7 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #game.gray{filter:grayscale(1) brightness(1.05)}
 
 #hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
-#score{font-family:var(--display);font-size:52px;line-height:1;color:#fff;
-  text-shadow:0 3px 0 rgba(0,0,0,.25),0 0 18px rgba(255,255,255,.25);font-variant-numeric:tabular-nums}
+#score{font-family:var(--display);font-size:52px;line-height:1;color:#ff9a1a;--sw:9px;--ss:rgba(60,20,90,.45);font-variant-numeric:tabular-nums}
 #candy{position:absolute;top:14px;left:max(12px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:6px;
   padding:4px 12px 4px 6px;border-radius:99px;background:rgba(0,0,0,.25);pointer-events:none;transition:transform .12s}
 #candy.bump{transform:scale(1.18)}
@@ -264,7 +263,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .item canvas,.item img{width:64px;height:64px}
 .buy{border:0;border-radius:99px;padding:4px 10px;font:600 12px var(--body);cursor:pointer;background:#e0408e;color:#fff;min-width:64px}
 .buy:disabled{background:#c9b8a8;cursor:not-allowed}
-.sheet{scrollbar-width:none;overflow-x:hidden;box-sizing:border-box;width:min(100%,440px);max-height:100%;overflow:auto;background:linear-gradient(#fbeacb,var(--cream));border:6px solid var(--cream-edge);border-radius:28px;
+.sheet{scrollbar-width:none;overflow-x:hidden;box-sizing:border-box;width:min(100%,440px);max-height:100%;overflow:auto;background:var(--candyPanel);border:6px solid #fff;box-shadow:var(--candyRim);border-radius:28px;
   padding:18px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#5b3210}
 .sheet > .pill{display:none}   /* closing is done with the X at the top (and by tapping outside) */
 .xClose{position:sticky;top:0;align-self:flex-end;margin:-6px -4px -44px 0;z-index:3;width:42px;height:42px;flex:none;border-radius:50%;cursor:pointer;
@@ -301,9 +300,24 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.8}}
 
 #over{background:rgba(30,30,30,.25)}
-.card{position:relative;width:min(86%,330px);background:linear-gradient(#fbeacb,var(--cream));border:6px solid var(--cream-edge);
-  border-radius:34px;padding:58px 20px 26px;box-shadow:0 18px 40px rgba(0,0,0,.35);
+.card{position:relative;width:min(86%,330px);background:var(--candyPanel);border:6px solid #fff;
+  border-radius:34px;padding:58px 20px 26px;box-shadow:var(--candyRim);
   display:flex;flex-direction:column;align-items:center;gap:14px;animation:panelIn .62s both}
+/* candy panels: cream with soft pink and orange dots, a shine on top, a white edge and a caramel rim with a darker lip below */
+:root{--candyPanel:radial-gradient(closest-side,rgba(255,255,255,.8),rgba(255,255,255,0)) 50% 6px/84% 28px no-repeat,
+  radial-gradient(circle,rgba(255,150,190,.2) 3px,transparent 3.5px) 0 0/22px 22px,radial-gradient(circle,rgba(255,190,110,.2) 3px,transparent 3.5px) 11px 11px/22px 22px,linear-gradient(#fff6e2,#fbe2b8);
+  --candyRim:0 0 0 5px #d99a52,0 9px 0 5px #a8662a,0 18px 30px rgba(0,0,0,.4),inset 0 -6px 0 rgba(200,140,70,.25)}
+/* sticker lettering: a thick white outline and a drop below */
+.sheet h2,.card .hint,.scores b,#score{paint-order:stroke fill;-webkit-text-stroke:var(--sw,8px) #fff;filter:drop-shadow(0 3px 0 var(--ss,rgba(120,50,10,.4)))}
+.sheet h2{color:#e8263a;--ss:rgba(140,20,10,.4)}
+.card .hint{--sw:6px}
+.card .hint.red{color:#e8263a;--ss:rgba(120,10,10,.35)}.card .hint.green{color:#2fae2c;--ss:rgba(20,80,20,.35)}
+.scores b{--sw:7px}
+/* title ribbons fold back at both ends, like a gift ribbon */
+.ribbon{--rd:var(--red-deep)}.ribbon.blue{--rd:#1a3a9a}.ribbon.gold{--rd:#a86400}#over.record .ribbon{--rd:#145214}
+.ribbon::before,.ribbon::after{content:"";position:absolute;z-index:-1;top:18px;bottom:-12px;width:30px;background:var(--rd)}
+.ribbon::before{right:100%;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,32% 50%)}
+.ribbon::after{left:100%;clip-path:polygon(0 0,100% 0,68% 50%,100% 100%,0 100%)}
 .ribbon{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-family:var(--display);font-size:40px;color:#fff;
   padding:4px 26px 8px;border-radius:20px;background:linear-gradient(#ff5b3a,var(--red));border:4px solid #fff;
   box-shadow:0 5px 0 var(--red-deep),0 10px 18px rgba(0,0,0,.25);text-shadow:0 3px 0 var(--red-deep);white-space:nowrap}
@@ -319,7 +333,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .ringProg .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffb03a,#f2490a)}
 .scores div{display:flex;flex-direction:column;align-items:center}
 .scores span{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
-.scores b{font-family:var(--display);font-weight:400;font-size:34px;color:#5b3210;font-variant-numeric:tabular-nums}
+.scores b{font-family:var(--display);font-weight:400;font-size:34px;color:#f2490a;font-variant-numeric:tabular-nums}
 .btn-retry{width:112px;height:112px;border-radius:50%;border:6px solid #fff;cursor:pointer;
   background:radial-gradient(circle at 40% 30%,#ff6a5a,var(--red) 60%,var(--red-deep));
   box-shadow:0 6px 0 #8c0c12,0 12px 20px rgba(0,0,0,.25);display:grid;place-items:center;transition:transform .12s}
