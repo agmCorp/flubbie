@@ -271,6 +271,8 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
    on close they lift a touch and then drop away */
 .sheet.panelIn{animation:panelIn .62s both}
 .sheet.panelOut{animation:panelOut .46s both;pointer-events:none}
+.card.cardOut{animation:panelOut .46s both}
+.overlay.leaving .card{pointer-events:none}   /* the backdrop still swallows taps, so nothing reaches the game until the card is gone */
 @keyframes panelIn{
   0%{transform:translateY(105vh);animation-timing-function:cubic-bezier(.45,0,.9,.6)}
   55%{transform:translateY(-26px);animation-timing-function:cubic-bezier(.3,0,.5,1)}
@@ -357,7 +359,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newlook{font-family:var(--display);font-size:22px;color:#a35f00}
 .hint{font-family:var(--display);font-size:19px;margin-top:-6px}
 .hint.red{color:#b3241b}.hint.green{color:#2f7a22}
-@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest{animation:none}}
+@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut{animation:none}}
 #splash{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:grid;place-items:center;transition:opacity .45s ease;-webkit-tap-highlight-color:transparent}
 #splash img{width:min(68vw,320px);height:auto;opacity:0;animation:splashLogo .9s ease-out .25s forwards}
 .ghostPill{padding:10px 26px;border-radius:99px;border:2px solid rgba(255,255,255,.55);color:#fff;font:600 16px var(--body);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
@@ -1510,19 +1512,30 @@ function goMenu(){ menuActAt = wallT(); endless = false; playMusic("menu"); $("e
 $("playBtn").addEventListener("click", ()=>{ ensureAudio(); if(!doorBusy) crewScare = wallT(); doorsTo(start); });   // the monsters jump, startled, as the doors close
 
 cv.addEventListener("pointerdown", e=>{ e.preventDefault(); ensureAudio(); jump(); });
+/* the game cards leave like the panels do: a little lift, then they drop away; whatever comes next waits until they are gone */
+function cardOut(ov, then){
+  const el = $(ov), card = el.querySelector(".card");
+  if(el.hidden || el.classList.contains("leaving")) return;
+  el.classList.add("leaving"); card.classList.add("cardOut"); sfx("PanelOut",.7);
+  el._out = setTimeout(()=>{ el.classList.remove("leaving"); card.classList.remove("cardOut"); el.hidden = true; then(); }, 450);
+}
+function cardStay(ov){   // called back before it was gone: it flies in again
+  const el = $(ov); if(!el.classList.contains("leaving")) return;
+  clearTimeout(el._out); el.classList.remove("leaving"); el.querySelector(".card").classList.remove("cardOut");
+}
 addEventListener("keydown", e=>{
   if(e.code==="Space"||e.code==="ArrowUp"){
     if(e.target.tagName==="BUTTON") return;
     e.preventDefault();
     if(!$("album").hidden || !$("shop").hidden || !$("settings").hidden || !$("levels").hidden || !$("credits").hidden) return;
     if(paused){ setPause(false); return; }
-    if(state==="play") jump(); else if(state==="won") keepGoing(); else if(state==="over") start(); else if(state==="menu" && menuIdle()) doorsTo(start);
+    if(state==="play") jump(); else if(state==="won") cardOut("win", keepGoing); else if(state==="over") cardOut("over", start); else if(state==="menu" && menuIdle()) doorsTo(start);
   }
 });
-$("retry").addEventListener("click", ()=>{ if(!$("album").hidden || !$("shop").hidden) return; ensureAudio(); start(); });   // a key press on the focused Retry must not restart while the wardrobe or shop is open
-$("home").addEventListener("click", goMenu);
-$("cont").addEventListener("click", ()=>keepGoing());
-$("home2").addEventListener("click", goMenu);
+$("retry").addEventListener("click", ()=>{ if(!$("album").hidden || !$("shop").hidden) return; ensureAudio(); cardOut("over", start); });   // a key press on the focused Retry must not restart while the wardrobe or shop is open
+$("home").addEventListener("click", ()=>cardOut("over", goMenu));
+$("cont").addEventListener("click", ()=>cardOut("win", keepGoing));
+$("home2").addEventListener("click", ()=>cardOut("win", goMenu));
 
 /* ---------- effects helpers ---------- */
 function burst(x,y,colors,n=14,spd=180){
@@ -1772,10 +1785,10 @@ function showEnd(){
   eb._t2 = setTimeout(()=>eb.classList.add("wig"), 900+700);
   eb._t3 = setTimeout(()=>{ eb.classList.remove("unlock","wig"); eb.classList.add("glow"); }, 900+700+600);
 }
-$("again").addEventListener("click", ()=>{ $("end").hidden = true; endless = false; checkpoint = 0; save("flubble-ring",0); start(); });
+$("again").addEventListener("click", ()=>cardOut("end", ()=>{ endless = false; checkpoint = 0; save("flubble-ring",0); start(); }));
 $("endGo").querySelector(".inf").innerHTML = INF;
-$("endGo").addEventListener("click", ()=>{ $("end").hidden = true; endless = true; start(); });
-$("home3").addEventListener("click", goMenu);
+$("endGo").addEventListener("click", ()=>cardOut("end", ()=>{ endless = true; start(); }));
+$("home3").addEventListener("click", ()=>cardOut("end", goMenu));
 const PARADE = ["pink","yellow","blue","orange","green","sleepy","mini","minib","friend","boss"];
 function drawFinale(){
   if(state!=="finale" && state!=="end") return;
@@ -3803,8 +3816,10 @@ $("looksBtn").addEventListener("pointerdown", e=>e.stopPropagation());
 $("albumClose").addEventListener("click", ()=>{ $("album").hidden = true; backToGame(); });
 function setPause(on){
   if(on && !(state==="play"||state==="rising")) return;
-  paused = on; $("pause").hidden = !on; pauseBtn.hidden = on || !(state==="play"||state==="rising");
-  syncMusic();
+  if(on){ cardStay("pause"); paused = true; $("pause").hidden = false; pauseBtn.hidden = true; syncMusic(); return; }
+  /* the game stays frozen until the pause card has dropped away */
+  const go = ()=>{ paused = false; pauseBtn.hidden = !(state==="play"||state==="rising"); last = performance.now(); syncMusic(); };
+  $("pause").hidden ? go() : cardOut("pause", go);
 }
 /* opened from the game itself: freeze quietly (no pause screen) and resume when it closes */
 let resumeAfter = false;
@@ -3812,7 +3827,8 @@ let resumeAfter = false;
 $("pHome").addEventListener("pointerdown", e=>e.stopPropagation());
 $("pHome").addEventListener("click", e=>{
   e.stopPropagation();
-  doorsTo(()=>{ paused = false; $("pause").hidden = true; buddy = null; goMenu(); });
+  if(doorBusy) return;
+  cardOut("pause", ()=>{}); doorsTo(()=>{ paused = false; $("pause").hidden = true; buddy = null; goMenu(); });
 });
 function fromGame(open){
   if(!(state==="play"||state==="rising")) return;
@@ -3827,7 +3843,7 @@ for(const [id,fn] of [["gLooks",openAlbum],["gShop",openShop],["pLooks",openAlbu
   $(id).addEventListener("click", e=>{ e.stopPropagation(); id[0]==="g" ? fromGame(fn) : fn(); });
 }
 pauseBtn.addEventListener("click", e=>{ e.stopPropagation(); setPause(true); });
-$("pause").addEventListener("pointerdown", e=>{ e.preventDefault(); setPause(false); last = performance.now(); });
+$("pause").addEventListener("pointerdown", e=>{ e.preventDefault(); setPause(false); });
 document.addEventListener("visibilitychange", ()=>{ if(document.hidden) setPause(true); });
 function paintSleep(){
   const c = $("sleepCube"), c2 = c.getContext("2d"), old = ctx;
