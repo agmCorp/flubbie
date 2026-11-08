@@ -31,7 +31,7 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
 #score{font-family:var(--display);font-size:52px;line-height:1;color:#ff9a1a;--sw:9px;--ss:rgba(60,20,90,.45);font-variant-numeric:tabular-nums}
 #candy{position:absolute;top:14px;left:max(12px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:6px;
-  padding:3px 12px 3px 5px;border-radius:99px;background:linear-gradient(#ff8ac4,#e0408e);border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.28);pointer-events:none;transition:transform .12s}
+  padding:3px 12px 3px 5px;border-radius:99px;background:linear-gradient(#4fd0dc,#14899a);border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.28);pointer-events:none;transition:transform .12s}
 #candy.bump{transform:scale(1.18)}
 /* the candy beats now and then, like a heart (as in the original game) */
 #candy svg{animation:candyBeat 5.5s ease-in-out infinite}
@@ -2720,10 +2720,13 @@ function drawIntroCard(){
   ctx.fillStyle = bad ? "#ffe0dc" : "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
   const ls = wrapLines(line, cw-32); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+38 + (i-(ls.length-1)/2)*18));
   // the player closes it when done reading
-  const bw = 120, bh = 38, byy = cy+80, pul = t>.35 ? 1+Math.sin(t*5)*.03 : 1;
-  ctx.save(); ctx.translate(cx, byy); ctx.scale(pul,pul);
+  const bw = 120, bh = 38, byy = cy+80, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
+  let sx = pul, sy = pul;
+  if(out!=null){ const k = Math.sin(Math.min(1, out/.16)*Math.PI); sx = 1+.1*k; sy = 1-.14*k; }   // tapped: a gummy squash
+  ctx.save(); ctx.translate(cx, byy); ctx.scale(sx,sy);
   ctx.fillStyle = bad ? "#9a1020" : "#b8330a"; rr(-bw/2, -bh/2+4, bw, bh, 19); ctx.fill();
   ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; rr(-bw/2, -bh/2, bw, bh, 19); ctx.fill();
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = 3.5; rr(-bw/2, -bh/2, bw, bh, 19); ctx.stroke();
   ctx.fillStyle = "rgba(255,255,255,.3)"; rr(-bw*.4, -bh/2+3, bw*.8, bh*.36, bh*.18); ctx.fill();   // the same shine as the buttons
   ctx.fillStyle = "#fff"; ctx.font = '400 20px "Lilita One", system-ui'; ctx.fillText("Got it!", 0, 1);
   ctx.restore();
