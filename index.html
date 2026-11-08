@@ -707,9 +707,9 @@ function drawFindBanner(dt){
   if(!findBanner) return;
   const L = findBanner.list, dur = 2.2 + L.length*.5;
   findBanner.t += dt; const t = findBanner.t; if(t > dur){ findBanner = null; return; }
-  const a = Math.min(1, t/.2, (dur-t)/.35), k = Math.min(1,t/.35), sc = .6 + .4*(1-Math.pow(1-k,3)) + Math.sin(k*10)*.04*(1-k);
+  const sc = popScale(t, dur);
   const bw = Math.min(Math.max(200, 30 + L.length*100), W-24), bh = 150, top = -42, step = Math.min(100, (bw-30)/L.length), cw = Math.min(88, step-8);
-  ctx.save(); ctx.globalAlpha = a; ctx.translate(W/2, H*.22); ctx.scale(sc,sc);
+  ctx.save(); ctx.translate(W/2, H*.22); ctx.scale(sc,sc);
   ctx.fillStyle = "#5a1ab8"; rr(-bw/2,top+6,bw,bh,20); ctx.fill();
   ctx.fillStyle = "#9a46ff"; rr(-bw/2,top,bw,bh,20); ctx.fill(); ctx.strokeStyle="#ffd23a"; ctx.lineWidth=4; rr(-bw/2,top,bw,bh,20); ctx.stroke();
   ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillStyle="#ffd23a"; ctx.font='400 24px "Lilita One", system-ui';
@@ -981,9 +981,8 @@ function drawBossFx(){
   // red edges pulsing
   const g = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.75);
   g.addColorStop(0,"rgba(180,0,20,0)"); g.addColorStop(1,`rgba(180,0,20,${(.35+.15*Math.sin(t*10))*a})`); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  // the banner slides in
-  const k = Math.min(1,t/.35), sl = (1-Math.pow(1-k,3)), y = H*.3;
-  ctx.save(); ctx.globalAlpha = a; ctx.translate(W/2 + (1-sl)*W, y); ctx.rotate(-.05);
+  const sc = popScale(t, 2);
+  ctx.save(); ctx.translate(W/2, H*.3); ctx.rotate(-.05); ctx.scale(sc,sc);
   ctx.fillStyle = "#3a0610"; rr(-W*.42, -44, W*.84, 92, 18); ctx.fill();
   ctx.fillStyle = "#e8263a"; rr(-W*.42, -50, W*.84, 92, 18); ctx.fill();
   ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; rr(-W*.42, -50, W*.84, 92, 18); ctx.stroke();
@@ -2582,6 +2581,12 @@ function pickTip(){
 /* the tip bubble is a real page element over the game, not canvas drawing: the browser moves it as one smooth
    picture, so its letters never shimmer or jump while the camera moves or settles */
 let tipShown = false, tipLast = "";
+function tipAway(){   // the tip bubble pops away where it was
+  const el = $("tipBox"); if(el.hidden) return;
+  if(el._out==null) el._out = wallT();
+  const u = wallT()-el._out;
+  if(u >= .3){ el.hidden = true; el._out = null; } else el.style.transform = `${el._base} scale(${popOut(u).toFixed(3)})`;
+}
 function drawTips(){
   curTip = paused ? null : pickTip(); if(!curTip) return;
   const y = sy(player.y), text = TIPS[curTip];
@@ -2593,8 +2598,9 @@ function drawTips(){
   const el = $("tipBox"); tipShown = true;
   if(tipLast !== text){ tipLast = text; el.innerHTML = lines.map(l=>l.replace(/&/g,"&amp;").replace(/</g,"&lt;")).join("<br>"); }
   el.style.fontSize = (15*scale).toFixed(2) + "px";
-  el.style.transform = `translate3d(${(bx*scale).toFixed(2)}px, ${(by*scale).toFixed(2)}px, 0) translate(-50%, -50%)`;
-  if(el.hidden) el.hidden = false;
+  if(el.hidden || el._out!=null){ el.hidden = false; el._at = wallT(); el._out = null; }
+  el._base = `translate3d(${(bx*scale).toFixed(2)}px, ${(by*scale).toFixed(2)}px, 0) translate(-50%, -50%)`;
+  el.style.transform = `${el._base} scale(${popIn(wallT()-el._at).toFixed(3)})`;
   if(curTip==="tap"){   // a tapping hand next to the hero
     const k = (T*1.6)%1, press = k<.25 ? k/.25 : k<.45 ? 1-(k-.25)/.2 : 0;
     ctx.save(); ctx.translate(player.x+30, y+26+press*6); ctx.scale(1.9-press*.15, 1.9-press*.15); ctx.translate(-11,-4);
@@ -2620,6 +2626,10 @@ function panelInY(t, d){
   const u = t/.62;
   return u>=1 ? 0 : u<.55 ? panelSeg(u,0,.55,d,-26,k=>k*k) : u<.72 ? panelSeg(u,.55,.72,-26,9,easeIO) : u<.86 ? panelSeg(u,.72,.86,9,-4,easeIO) : panelSeg(u,.86,1,-4,0,easeIO);
 }
+/* in-game notices pop in place instead: they grow past their size and settle, and on the way out swell a touch and shrink away */
+function popIn(t){ const u = t/.45; return u>=1 ? 1 : u<.5 ? panelSeg(u,0,.5,0,1.18,k=>1-(1-k)*(1-k)) : u<.75 ? panelSeg(u,.5,.75,1.18,.94,easeIO) : panelSeg(u,.75,1,.94,1,easeIO); }
+function popOut(t){ const u = Math.min(1, t/.3); return u<.3 ? panelSeg(u,0,.3,1,1.08,k=>1-(1-k)*(1-k)) : panelSeg(u,.3,1,1.08,0,k=>k*k); }
+function popScale(t, life){ return t > life-.3 ? popOut(t-(life-.3)) : popIn(t); }
 function panelOutY(t, d){
   const u = Math.min(1, t/.46);
   return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k*k);
@@ -4662,7 +4672,8 @@ function drawFx(){
   for(const p of parts){ ctx.globalAlpha = 1-p.t/p.life; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,sy(p.y),p.r,0,6.28); ctx.fill(); }
   ctx.globalAlpha=1;
   ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.font='26px "Lilita One", system-ui';
-  for(const f of floats){ ctx.globalAlpha = 1-f.t/1.1; ctx.lineWidth=4; ctx.strokeStyle="rgba(0,0,0,.35)"; ctx.strokeText(f.txt,f.x,sy(f.y)); ctx.fillStyle=f.c; ctx.fillText(f.txt,f.x,sy(f.y)); }
+  for(const f of floats){ const sc = popScale(f.t, 1.1); ctx.save(); ctx.translate(f.x, sy(f.y)); ctx.scale(sc,sc);
+    ctx.lineWidth=4; ctx.strokeStyle="rgba(0,0,0,.35)"; ctx.strokeText(f.txt,0,0); ctx.fillStyle=f.c; ctx.fillText(f.txt,0,0); ctx.restore(); }
   ctx.globalAlpha=1;
   for(const c of candyFx){ ctx.save(); ctx.translate(c.x,c.y); ctx.rotate(c.rot); drawCandy(0,0,1.15,c.c); ctx.restore(); }
 }
@@ -4704,7 +4715,7 @@ function render(){
     for(let i=0;i<16;i++){ const x=(i*67.3+13)%W, yy=((T*1500+i*211)%(H+240))-120; ctx.beginPath(); ctx.moveTo(x,yy); ctx.lineTo(x,yy+50+(i%3)*25); ctx.stroke(); }
   }
   drawPowerHud();
-  drawBossFx(); drawFindBanner(introCard||paused ? 0 : 1/60); tipShown = false; drawTips(); if(!tipShown && !$("tipBox").hidden) $("tipBox").hidden = true;
+  drawBossFx(); drawFindBanner(introCard||paused ? 0 : 1/60); tipShown = false; drawTips(); if(!tipShown) tipAway();
   if(shock){ const k=shock.t/.7; ctx.strokeStyle=`rgba(255,250,200,${1-k})`; ctx.lineWidth=6*(1-k)+1; ctx.beginPath(); ctx.arc(shock.x,sy(shock.y),30+k*240,0,6.28); ctx.stroke();
     ctx.lineWidth=3*(1-k)+.5; ctx.beginPath(); ctx.arc(shock.x,sy(shock.y),20+k*150,0,6.28); ctx.stroke(); }
   if(flashWhite>0 && !introCard){ ctx.fillStyle=`rgba(255,255,240,${flashWhite*.5})`; ctx.fillRect(-20,-20,W+40,H+40); }
