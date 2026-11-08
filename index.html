@@ -244,13 +244,13 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .look.prize.on{border-color:#2fae2c}
 .look .trophy{font-size:11px;font-weight:700;color:#a35f00;letter-spacing:.06em;text-transform:uppercase}
 @media (max-width:420px){ .wtab{font-size:13px;padding:6px 10px} }
-.buy.owned{background:#2fae2c;color:#fff;opacity:1;cursor:default}
+.buy.owned{background:linear-gradient(#6fd86a,#2fae2c);box-shadow:0 2px 0 #1c6a1a;color:#fff;opacity:1;cursor:default}
 .sheet::-webkit-scrollbar{display:none;width:0;height:0}   /* panels scroll with the finger, no bar on the side */
 @media (max-width:420px){ .itab{font-size:12px!important;padding:6px 7px!important} .tab{font-size:13px;padding:6px 10px;white-space:nowrap} .tabs{gap:2px;max-width:100%} }
 .isub{margin:6px 0 4px;font:600 13px var(--body);color:#7a4a1c}
 .itab{border:0;background:transparent;font:600 13px var(--body);color:#7a4a1c;padding:6px 9px;white-space:nowrap;border-radius:99px;cursor:pointer}
 .itab.on{background:#fff;color:#c2370f;box-shadow:0 2px 0 rgba(0,0,0,.08)}
-.item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:16px;border:3px solid transparent;background:rgba(255,255,255,.5);font:600 12px var(--body);color:#5b3210}
+.item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border-radius:16px;border:3px solid transparent;font:600 12px var(--body);color:#5b3210}
 .item.on{border-color:#2fae2c;background:#fff}
 .item.mystery{background:rgba(120,90,60,.12);color:#9a7a5a}
 .item .note{font:600 10px/1.2 var(--body);text-align:center;padding:0 4px;opacity:.8;margin-top:-2px}
@@ -260,9 +260,24 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newDot{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#e8263a;border:2px solid #fff;animation:dotPop 1.2s ease-in-out infinite}
 @keyframes dotPop{50%{transform:scale(1.2)}}
 .item.tap{cursor:pointer;transition:transform .1s}.item.tap:active{transform:scale(.96)}
+/* candy shop: sunken tab rail with a glossy pink tab, raised tiles with a lip and a shine, items on a soft golden glow, still-wrapped presents for what is not found yet */
+.tabs{background:#f0d2a4;box-shadow:inset 0 2px 3px rgba(150,90,30,.3)}
+.tab.on,.itab.on,.wtab.on{position:relative;color:#fff;background:linear-gradient(#ff8ac4,#e0408e);box-shadow:0 3px 0 #a01a5e;text-shadow:0 1px 0 #a01a5e}
+.tab.on::after,.itab.on::after,.wtab.on::after{content:"";position:absolute;left:14%;right:14%;top:3px;height:7px;border-radius:99px;background:rgba(255,255,255,.45)}
+.item,.look{position:relative;background:linear-gradient(#fffdf6,#fff0d6);box-shadow:0 4px 0 #e2b67a,0 6px 8px rgba(150,90,30,.2),inset 0 0 0 2px #fff}
+.item::after,.look::after{content:"";position:absolute;left:12%;right:12%;top:4px;height:9px;border-radius:99px;background:rgba(255,255,255,.75);pointer-events:none}
+.item canvas,.item img,.look canvas,.look img{background:radial-gradient(closest-side,rgba(255,215,110,.5),rgba(255,215,110,0))}
+.item.mystery,.look.locked{background:linear-gradient(#f7e2c2,#efd2a6);box-shadow:0 4px 0 #d3a464,inset 0 0 0 2px rgba(255,255,255,.6)}
+.look.locked canvas,.look.locked img{background:none}
+.gift{position:relative;z-index:1;width:46px;height:38px;margin:26px 0 2px;border-radius:6px;
+  background:linear-gradient(90deg,transparent 40%,#ffd23a 40% 60%,transparent 60%),repeating-linear-gradient(45deg,#ff7ab8 0 6px,#ff9ccb 6px 12px);box-shadow:inset 0 -5px 0 rgba(0,0,0,.12)}
+.gift::before{content:"";position:absolute;left:-3px;right:-3px;top:-8px;height:11px;border-radius:4px;background:linear-gradient(90deg,#e0408e 40%,#ffd23a 40% 60%,#e0408e 60%)}
+.gift::after{content:"";position:absolute;left:50%;top:-19px;translate:-50% 0;width:32px;height:14px;
+  background:radial-gradient(circle at 50% 80%,#f0a800 3.5px,transparent 4px),radial-gradient(8px 5.5px at 9px 8px,#ffd23a 85%,transparent 100%),radial-gradient(8px 5.5px at 23px 8px,#ffd23a 85%,transparent 100%)}
+
 .item canvas,.item img{width:64px;height:64px}
-.buy{border:0;border-radius:99px;padding:4px 10px;font:600 12px var(--body);cursor:pointer;background:#e0408e;color:#fff;min-width:64px}
-.buy:disabled{background:#c9b8a8;cursor:not-allowed}
+.buy{border:0;border-radius:99px;padding:4px 10px;font:600 12px var(--body);cursor:pointer;background:linear-gradient(#ff7ab8,#e0408e);box-shadow:0 2px 0 #a01a5e;color:#fff;min-width:64px}
+.buy:disabled{background:#c9b8a8;box-shadow:0 2px 0 #9a8a7a;cursor:not-allowed}
 .sheet{scrollbar-width:none;overflow-x:hidden;box-sizing:border-box;width:min(100%,440px);max-height:100%;overflow:auto;background:var(--candyPanel);border:6px solid #fff;box-shadow:var(--candyRim);border-radius:28px;
   padding:18px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#5b3210}
 .sheet > .pill{display:none}   /* closing is done with the X at the top (and by tapping outside) */
@@ -289,7 +304,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .sheet h2{margin:0;font:400 34px var(--display);color:#c2370f}
 .sheet .sub{margin:0;font-size:14px;font-weight:500;max-width:34ch}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;width:100%}
-.look{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 8px;border-radius:16px;border:3px solid transparent;background:rgba(255,255,255,.45);cursor:pointer;font:600 12px var(--body);color:#5b3210}
+.look{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 8px;border-radius:16px;border:3px solid transparent;cursor:pointer;font:600 12px var(--body);color:#5b3210}
 .look canvas,.look img{width:64px;height:64px}
 .look.locked{cursor:default;color:#9a7a5a}
 .look.on{border-color:#2fae2c;background:#fff}
@@ -4411,16 +4426,10 @@ function renderShop(){
     const key = shopTab==="skins" ? "skin:"+it.id : shopTab==="pets" ? "pet:"+it.id : shopTab==="looks" ? "look:"+it.id : null;
     if(key && it.price>0 && !isFound(key)){   // not found yet: a mystery
       const card = document.createElement("div"); card.className = "item mystery";
-      const c = document.createElement("canvas"); c.width=128; c.height=128; card.appendChild(c);
-      shopTab==="skins" ? paintSkin(c, it.id) : shopTab==="pets" ? paintPet(c, it.id) : paintLook(c, it.id, false, 2.4);
-      // a flat, fully solid silhouette: see-through skins (like the ghost) must not show their face through it
-      const c2 = c.getContext("2d"); c2.setTransform(1,0,0,1,0,0); c2.globalAlpha = 1;
-      const im = c2.getImageData(0,0,128,128), d = im.data;
-      for(let i=0;i<d.length;i+=4){ if(d[i+3] > 12){ d[i]=138; d[i+1]=122; d[i+2]=106; d[i+3]=255; } else d[i+3]=0; }
-      c2.putImageData(im,0,0); c2.globalCompositeOperation="source-over"; c2.fillStyle="#fff"; c2.font='44px "Lilita One", system-ui'; c2.textAlign="center"; c2.textBaseline="middle"; c2.fillText("?",64,66);
+      const g = document.createElement("i"); g.className = "gift"; card.appendChild(g);   // still wrapped: a present
       const nm = document.createElement("span"); nm.textContent = "???"; card.appendChild(nm);
       const hint = document.createElement("small"); hint.className = "hint"; hint.textContent = `From ring ${LOCKS.find(x=>x.key===key).ring}`; card.appendChild(hint);
-      grid.appendChild(card); toImg(c); return;
+      grid.appendChild(card); return;
     }
     const card = document.createElement("div"); card.className = "item" + (key && shopNew.has(key) ? " fresh" : "");
     const c = document.createElement("canvas"); c.width=128; c.height=128; card.appendChild(c);
