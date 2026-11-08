@@ -270,13 +270,13 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newDot{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#e8263a;border:2px solid #fff;animation:dotPop 1.2s ease-in-out infinite}
 @keyframes dotPop{50%{transform:scale(1.2)}}
 .item.tap{cursor:pointer}
-/* candy shop: sunken tab rail with a glossy blue tab, raised tiles lit on top and shaded below, items on a soft golden glow, still-wrapped presents for what is not found yet */
+/* candy shop: sunken tab rail with a glossy blue tab, puffy tiles (light in the middle, golden at the edges), items on a soft golden glow, still-wrapped presents for what is not found yet */
 .tabs{background:#f0d2a4;box-shadow:inset 0 2px 3px rgba(150,90,30,.3)}
 .tab.on,.itab.on,.wtab.on{position:relative;color:#fff;background:linear-gradient(#7ab8ff,#3a6ae0);box-shadow:0 3px 0 #1a3a9a;text-shadow:0 1px 0 #1a3a9a}
 .tab.on::after,.itab.on::after,.wtab.on::after{content:"";position:absolute;left:14%;right:14%;top:3px;height:7px;border-radius:99px;background:rgba(255,255,255,.45)}
-.item,.look{position:relative;background:linear-gradient(#fffefa,#fff3dc 55%,#ffe6bd);box-shadow:inset 0 2px 0 #fff,inset 0 -5px 0 rgba(214,160,90,.28),0 4px 0 #e2b67a,0 6px 8px rgba(150,90,30,.2)}
+.item,.look{position:relative;background:radial-gradient(ellipse 90% 70% at 50% 35%,#fffef9,#fff0d4 70%,#fbdcae);box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),inset 0 -6px 8px rgba(214,150,70,.25),0 4px 0 #e2b67a,0 6px 8px rgba(150,90,30,.2)}
 .item canvas,.item img,.look canvas,.look img{background:radial-gradient(closest-side,rgba(255,215,110,.5),rgba(255,215,110,0))}
-.item.mystery,.look.locked{background:linear-gradient(#f9e8cc,#f0d6ab 60%,#e8c896);box-shadow:inset 0 2px 0 rgba(255,255,255,.7),inset 0 -5px 0 rgba(180,120,50,.25),0 4px 0 #d3a464}
+.item.mystery,.look.locked{background:radial-gradient(ellipse 90% 70% at 50% 35%,#fbecd2,#f1d8ae 70%,#e6c28c);box-shadow:inset 0 0 0 2px rgba(255,255,255,.6),inset 0 -6px 8px rgba(170,110,40,.25),0 4px 0 #d3a464}
 .look.locked canvas,.look.locked img{background:none}
 .gift{position:relative;z-index:1;width:46px;height:38px;margin:26px 0 2px;border-radius:6px;
   background:linear-gradient(90deg,transparent 40%,var(--gr) 40% 60%,transparent 60%),repeating-linear-gradient(45deg,var(--g1) 0 6px,var(--g2) 6px 12px);box-shadow:inset 0 -5px 0 rgba(0,0,0,.12)}
