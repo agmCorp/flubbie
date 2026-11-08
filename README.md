@@ -8,9 +8,9 @@
 </p>
 
 <p align="center">
-  <a href="https://agmcorp.itch.io/flubbie"><img src="https://img.shields.io/badge/%E2%96%B6%20Play%20free-itch.io-fa5c5c?style=for-the-badge" alt="Play free on itch.io"></a>
+  <a href="https://agmcorp.github.io/flubbie/"><img src="https://img.shields.io/badge/%E2%96%B6%20Play%20now-in%20your%20browser-ff7a1a?style=for-the-badge" alt="Play now in your browser"></a>
   &nbsp;
-  <img src="https://img.shields.io/badge/Mobile%20%26%20desktop-browser-4aa8ff?style=for-the-badge" alt="Mobile and desktop browser">
+  <a href="https://agmcorp.itch.io/flubbie"><img src="https://img.shields.io/badge/Also%20on-itch.io-fa5c5c?style=for-the-badge" alt="Also on itch.io"></a>
 </p>
 
 <p align="center">
@@ -30,17 +30,30 @@ The monsters move in patterns: watch them, wait for the gap, and go. But don't w
 - **A long climb** with a boss every few rings, a celebration at each milestone, and a surprise waiting at the Golden Ring
 - **Power-ups and tricks**: power ball, shield, shockwave, slow and fast clocks, tiny potion, magnet, freeze, candy rain, a hungry monster friend, and a couple of sneaky curses
 - **Endless mode**, unlocked at the top: the rings never stop, so how high can you go?
-- **A candy shop and a wardrobe** full of colors, looks and pets that float by Flubbie's side
+- **A candy shop and a wardrobe** full of colors, looks and pets that float by Flubbie's side (see below)
 - **Prizes** to win along the way, from a mustache to the royal crown
-- **Seasonal looks**: Halloween and Christmas dress up the sky, the monsters and the pets. Pick one anytime from the menu
+- **Seasonal looks**: Halloween and Christmas (see below)
 - **Share your record** as a picture and challenge your friends
 - Plays on phones and computers, nothing to install
 
+## Colors, looks and pets
+
+Collect candies on the way up and spend them in the shop. Everything you own is chosen in the wardrobe: the color and the look show up wherever Flubbie appears, and the pet floats by its side while you play.
+
 <p align="center">
-  <img src="docs/halloween.jpg" width="200" alt="Halloween look">
-  <img src="docs/christmas.jpg" width="200" alt="Christmas look">
-  <img src="docs/shop.jpg" width="200" alt="The shop">
+  <img src="docs/shop.jpg" width="240" alt="The shop">
 </p>
+
+## Seasonal looks
+
+Tap the season button in the corner of the menu to switch between **Classic**, **Halloween** and **Christmas**, any day of the year. The sky, the monsters and the pets dress up for the occasion, while the game stays the same. During the holidays the game opens in the season's look on its own, unless you picked another one.
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="docs/halloween.jpg" width="220" alt="Halloween look"><br><b>Halloween</b><br>Night skies, bats, and a witch, a mummy, a pumpkin and more</td>
+    <td align="center"><img src="docs/christmas.jpg" width="220" alt="Christmas look"><br><b>Christmas</b><br>Snowy mountains, falling snow, reindeer and Santa hats</td>
+  </tr>
+</table>
 
 ## Run it locally
 
@@ -51,6 +64,8 @@ python3 -m http.server 8000
 ```
 
 Then open <http://localhost:8000>.
+
+The same files are published with GitHub Pages at <https://agmcorp.github.io/flubbie/>.
 
 ## Project layout
 
