@@ -17,7 +17,6 @@
   <img src="docs/menu.jpg" width="200" alt="Main menu">
   <img src="docs/play.jpg" width="200" alt="Climbing the rings">
   <img src="docs/boss.jpg" width="200" alt="Boss defeated, new prizes in the shop">
-  <img src="docs/finale.jpg" width="200" alt="The grand finale">
 </p>
 
 ## How to play
@@ -28,7 +27,7 @@ The monsters move in patterns: watch them, wait for the gap, and go. But don't w
 
 ## What's inside
 
-- **A long climb** with a boss every few rings, a celebration at each milestone, and a grand finale on the Golden Ring
+- **A long climb** with a boss every few rings, a celebration at each milestone, and a surprise waiting at the Golden Ring
 - **Power-ups and tricks**: power ball, shield, shockwave, slow and fast clocks, tiny potion, magnet, freeze, candy rain, a hungry monster friend, and a couple of sneaky curses
 - **Endless mode**, unlocked at the top: the rings never stop, so how high can you go?
 - **A candy shop and a wardrobe** full of colors, looks and pets that float by Flubbie's side
