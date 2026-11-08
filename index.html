@@ -34,6 +34,9 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #candy{position:absolute;top:14px;left:max(12px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:6px;
   padding:4px 12px 4px 6px;border-radius:99px;background:rgba(0,0,0,.25);pointer-events:none;transition:transform .12s}
 #candy.bump{transform:scale(1.18)}
+/* the candy beats now and then, like a heart (as in the original game) */
+#candy svg{animation:candyBeat 5.5s ease-in-out infinite}
+@keyframes candyBeat{0%,14%,31%,100%{scale:1}3%,20%{scale:1.3}6%,23%{scale:1.05}9%,26%{scale:1.22}}
 #candyN{font-family:var(--display);font-size:22px;color:#fff;font-variant-numeric:tabular-nums;min-width:2ch}
 #chips{position:absolute;top:72px;left:0;right:0;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;pointer-events:none;
   padding-left:calc(max(12px,env(safe-area-inset-left,0px)) + 50px);padding-right:calc(max(12px,env(safe-area-inset-right,0px)) + 50px)}
@@ -350,6 +353,13 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #over .row{gap:10px}
 #over .btn-small{width:clamp(46px,15vw,58px);height:clamp(46px,15vw,58px)}
 .btn-small.purple{background:radial-gradient(circle at 40% 30%,#c79aff,#8a46e0 60%,#5a1ab8)}
+/* the glossy shine of the menu buttons, on every bright button; the big round one of each card also breathes like Play */
+.btn-retry,.btn-small,.buy{position:relative}
+.btn-retry::after,.btn-small::after,.xClose::after{content:"";position:absolute;left:16%;top:8%;width:52%;height:24%;border-radius:50%;background:rgba(255,255,255,.38);pointer-events:none}
+.buy,.endlessBtn{isolation:isolate}   /* their shine sits under the text */
+.buy::after,.endlessBtn::before{content:"";position:absolute;z-index:-1;left:10%;top:7%;width:80%;height:36%;border-radius:99px;background:rgba(255,255,255,.3);pointer-events:none}
+.buy:disabled::after{display:none}
+.btn-retry{animation:breathe 1.6s ease-in-out infinite}
 /* Endless: dying past your record is a celebration, not a failure (the gold ribbon stays for the real win) */
 #over.record .ribbon{font-size:34px;background:linear-gradient(#8ff07a,#2fae2c);box-shadow:0 5px 0 #145214,0 10px 18px rgba(0,0,0,.25);text-shadow:0 3px 0 #145214}
 #over.record #fHero{animation:proudHop .9s ease-in-out infinite}
@@ -359,7 +369,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newlook{font-family:var(--display);font-size:22px;color:#a35f00}
 .hint{font-family:var(--display);font-size:19px;margin-top:-6px}
 .hint.red{color:#b3241b}.hint.green{color:#2f7a22}
-@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut{animation:none}}
+@media (prefers-reduced-motion:reduce){.stat.endl,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut,#candy svg,.btn-retry{animation:none}}
 #splash{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:grid;place-items:center;transition:opacity .45s ease;-webkit-tap-highlight-color:transparent}
 #splash img{width:min(68vw,320px);height:auto;opacity:0;animation:splashLogo .9s ease-out .25s forwards}
 .ghostPill{padding:10px 26px;border-radius:99px;border:2px solid rgba(255,255,255,.55);color:#fff;font:600 16px var(--body);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
@@ -2652,6 +2662,7 @@ function drawIntroCard(){
   ctx.save(); ctx.translate(cx, byy); ctx.scale(pul,pul);
   ctx.fillStyle = bad ? "#9a1020" : "#b8330a"; rr(-bw/2, -bh/2+4, bw, bh, 19); ctx.fill();
   ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; rr(-bw/2, -bh/2, bw, bh, 19); ctx.fill();
+  ctx.fillStyle = "rgba(255,255,255,.3)"; rr(-bw*.4, -bh/2+3, bw*.8, bh*.36, bh*.18); ctx.fill();   // the same shine as the buttons
   ctx.fillStyle = "#fff"; ctx.font = '400 20px "Lilita One", system-ui'; ctx.fillText("Got it!", 0, 1);
   ctx.restore();
   ctx.restore();
