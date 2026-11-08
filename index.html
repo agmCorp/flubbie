@@ -31,12 +31,12 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
 #score{font-family:var(--display);font-size:52px;line-height:1;color:#ff9a1a;--sw:9px;--ss:rgba(60,20,90,.45);font-variant-numeric:tabular-nums}
 #candy{position:absolute;top:14px;left:max(12px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:6px;
-  padding:3px 12px 3px 5px;border-radius:99px;background:linear-gradient(#fffdf6,#ffe3b8);border:3px solid #fff;box-shadow:0 3px 0 #d39a52,0 4px 8px rgba(0,0,0,.2);pointer-events:none;transition:transform .12s}
+  padding:3px 12px 3px 5px;border-radius:99px;background:linear-gradient(#ff8ac4,#e0408e);border:3px solid #fff;box-shadow:0 3px 0 #a01a5e,0 4px 8px rgba(0,0,0,.2);pointer-events:none;transition:transform .12s}
 #candy.bump{transform:scale(1.18)}
 /* the candy beats now and then, like a heart (as in the original game) */
 #candy svg{animation:candyBeat 5.5s ease-in-out infinite}
 @keyframes candyBeat{0%,14%,31%,100%{scale:1}3%,20%{scale:1.3}6%,23%{scale:1.05}9%,26%{scale:1.22}}
-#candyN{font-family:var(--display);font-size:22px;color:#e0408e;font-variant-numeric:tabular-nums;min-width:2ch}
+#candyN{font-family:var(--display);font-size:22px;color:#fff;text-shadow:0 2px 0 #a01a5e;font-variant-numeric:tabular-nums;min-width:2ch}
 #chips{position:absolute;top:72px;left:0;right:0;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;pointer-events:none;
   padding-left:calc(max(12px,env(safe-area-inset-left,0px)) + 50px);padding-right:calc(max(12px,env(safe-area-inset-right,0px)) + 50px)}
 .chip.slow{background:#2a8fe0}.chip.endless{background:#7a4ae0}.chip.fast{background:#e8262c;animation:pulse .5s ease-in-out infinite}
@@ -237,8 +237,8 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #album,#shop{background:rgba(20,10,40,.55);z-index:5}
 .btn-small.pink{background:radial-gradient(circle at 40% 30%,#ff9ad0,#e0408e 60%,#a01a5e)}
 .shopHead{display:flex;align-items:center;gap:12px}
-.bal{display:inline-flex;align-items:center;gap:6px;font:400 22px var(--display);color:#e0408e;background:linear-gradient(#fffdf6,#ffe3b8);border:3px solid #fff;box-shadow:0 3px 0 #d39a52,0 4px 8px rgba(0,0,0,.2);padding:2px 14px 2px 8px;border-radius:99px}   /* the same candy counter as in the game and the menu */
-.bal::before{content:"";flex:none;width:30px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -11 30 22'%3E%3Cpath d='M-8 0 L-14 -7.5 L-13 7.5Z M8 0 L14 -7.5 L13 7.5Z' fill='%23ff8ac4' stroke='%23fff' stroke-width='1.2'/%3E%3Cellipse rx='9' ry='7.5' fill='%23ff4fa0' stroke='%23fff' stroke-width='1.4'/%3E%3Cpath d='M-5 -6 L1 6 M1 -7 L6 4' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.bal{display:inline-flex;align-items:center;gap:6px;font:400 22px var(--display);color:#fff;text-shadow:0 2px 0 #a01a5e;background:linear-gradient(#ff8ac4,#e0408e);border:3px solid #fff;box-shadow:0 3px 0 #a01a5e,0 4px 8px rgba(0,0,0,.2);padding:2px 14px 2px 8px;border-radius:99px}   /* the same candy counter as in the game */
+.bal::before{content:"";flex:none;width:30px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -11 30 22'%3E%3Cpath d='M-8 0 L-14 -7.5 L-13 7.5Z M8 0 L14 -7.5 L13 7.5Z' fill='%23ffd6ea'/%3E%3Cellipse rx='9' ry='7.5' fill='%23fff'/%3E%3Cpath d='M-5 -6 L1 6 M1 -7 L6 4' stroke='%23e0408e' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
 .tabs{display:flex;gap:6px;background:rgba(160,110,60,.15);padding:4px;border-radius:99px}
 .tab{border:0;background:transparent;font:600 14px var(--body);color:#7a4a1c;padding:6px 14px;border-radius:99px;cursor:pointer}
 .tab.on{background:#fff;color:#c2370f;box-shadow:0 2px 0 rgba(0,0,0,.08)}
@@ -455,9 +455,9 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
   <div id="hud" hidden><div id="score">0</div></div>
   <div id="candy" hidden>
     <svg width="30" height="22" viewBox="-15 -11 30 22" aria-hidden="true">
-      <path d="M-8 0 L-14 -7 L-13 7Z M8 0 L14 -7 L13 7Z" fill="#ff4f9a"/>
-      <ellipse rx="9" ry="7.5" fill="#ff6fb0"/>
-      <path d="M-5 -6 L1 6 M1 -7 L6 4" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M-8 0 L-14 -7 L-13 7Z M8 0 L14 -7 L13 7Z" fill="#ffd6ea"/>
+      <ellipse rx="9" ry="7.5" fill="#fff"/>
+      <path d="M-5 -6 L1 6 M1 -7 L6 4" stroke="#e0408e" stroke-width="2.4" stroke-linecap="round"/>
     </svg>
     <span id="candyN">0</span>
   </div>
@@ -2713,21 +2713,49 @@ function panelOutY(t, d){
   const u = Math.min(1, t/.46);
   return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k*k);
 }
+/* the candy panel and title ribbon of the cards, drawn on the canvas: caramel rim with a lip, white edge, cream with dots, a shine on top */
+function candyPanel(x, y, w, h){
+  ctx.fillStyle = "#a8662a"; rr(x-5, y+4, w+10, h+10, 31); ctx.fill();
+  ctx.fillStyle = "#d99a52"; rr(x-5, y-5, w+10, h+10, 31); ctx.fill();
+  ctx.fillStyle = "#fff"; rr(x, y, w, h, 26); ctx.fill();
+  ctx.save(); rr(x+6, y+6, w-12, h-12, 21);
+  const g = ctx.createLinearGradient(0, y, 0, y+h); g.addColorStop(0, "#fff6e2"); g.addColorStop(1, "#fbe2b8"); ctx.fillStyle = g; ctx.fill(); ctx.clip();
+  for(let yy = y+6; yy < y+h; yy += 22) for(let xx = x+6; xx < x+w; xx += 22){
+    ctx.fillStyle = "rgba(255,150,190,.2)"; ctx.beginPath(); ctx.arc(xx, yy, 3, 0, 6.28); ctx.fill();
+    ctx.fillStyle = "rgba(255,190,110,.2)"; ctx.beginPath(); ctx.arc(xx+11, yy+11, 3, 0, 6.28); ctx.fill(); }
+  const sh = ctx.createLinearGradient(0, y+6, 0, y+30); sh.addColorStop(0, "rgba(255,255,255,.8)"); sh.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = sh; ctx.beginPath(); ctx.ellipse(x+w/2, y+16, w*.42, 12, 0, 0, 6.28); ctx.fill();
+  ctx.restore();
+}
+function candyRibbon(cx, y, text, [light, main, dark]){
+  ctx.font = '400 30px "Lilita One", system-ui'; const w = ctx.measureText(text).width + 56, h = 48;
+  ctx.fillStyle = dark;   // the ends fold back behind
+  ctx.beginPath(); ctx.moveTo(cx-w/2, y-6); ctx.lineTo(cx-w/2-30, y-6); ctx.lineTo(cx-w/2-20, y+12); ctx.lineTo(cx-w/2-30, y+30); ctx.lineTo(cx-w/2, y+30); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(cx+w/2, y-6); ctx.lineTo(cx+w/2+30, y-6); ctx.lineTo(cx+w/2+20, y+12); ctx.lineTo(cx+w/2+30, y+30); ctx.lineTo(cx+w/2, y+30); ctx.fill();
+  rr(cx-w/2, y-h/2+5, w, h, 14); ctx.fill();
+  const g = ctx.createLinearGradient(0, y-h/2, 0, y+h/2); g.addColorStop(0, light); g.addColorStop(1, main);
+  ctx.fillStyle = g; rr(cx-w/2, y-h/2, w, h, 14); ctx.fill();
+  ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; rr(cx-w/2, y-h/2, w, h, 14); ctx.stroke();
+  ctx.fillStyle = "rgba(255,255,255,.4)"; rr(cx-w/2+12, y-h/2+5, w-24, 11, 6); ctx.fill();
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "rgba(0,0,0,.25)"; ctx.fillText(text, cx, y+4);
+  ctx.fillStyle = "#fff"; ctx.fillText(text, cx, y+1);
+}
 function drawIntroCard(){
   if(!introCard) return;
   const [title, line, bad] = POWER_INFO[introCard.it], t = introCard.t, out = introCard.out;
   const a = out==null ? clamp(t/.3,0,1) : 1-clamp(out/.46,0,1), dy = out==null ? panelInY(t, H) : panelOutY(out, H);
   ctx.save(); ctx.globalAlpha = a*.45; ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H); ctx.globalAlpha = 1;
-  const cw = Math.min(W-36, 300), ch = 232, cx = W/2, cy = H*.42 + dy;
-  ctx.fillStyle = bad ? "#3a0e14" : "#fff6e6"; ctx.strokeStyle = bad ? "#ff6a5a" : "#e9c993"; ctx.lineWidth = 6;
-  rr(cx-cw/2, cy-ch/2, cw, ch, 26); ctx.fill(); ctx.stroke();
-  ctx.save(); ctx.translate(cx, cy-62); ctx.scale(1.7,1.7); drawItem(introCard.it, "cupcake"); ctx.restore();
-  ctx.textAlign = "center"; ctx.textBaseline = "middle";
-  ctx.fillStyle = bad ? "#ff8a7a" : "#c2370f"; ctx.font = '400 26px "Lilita One", system-ui'; ctx.fillText((bad?"Uh oh! ":"New! ") + title, cx, cy+6);
-  ctx.fillStyle = bad ? "#ffe0dc" : "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
-  const ls = line.split("\n").flatMap(p=>wrapLines(p, cw-32)); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+38 + (i-(ls.length-1)/2)*18));
+  const cw = Math.min(W-36, 300), ch = 252, cx = W/2, cy = H*.42 + dy;
+  candyPanel(cx-cw/2, cy-ch/2, cw, ch);
+  ctx.save(); ctx.translate(cx, cy-64); ctx.scale(1.7,1.7); drawItem(introCard.it, "cupcake"); ctx.restore();
+  candyRibbon(cx, cy-ch/2, bad ? "Uh oh!" : "New!", bad ? ["#ff7a6a","#e8263a","#8c0c12"] : ["#ffe066","#f0a000","#a86400"]);
+  ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+  ctx.font = '400 28px "Lilita One", system-ui'; ctx.lineWidth = 8; ctx.strokeStyle = "#fff"; ctx.strokeText(title, cx, cy+14);   // sticker lettering
+  ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; ctx.fillText(title, cx, cy+14);
+  ctx.fillStyle = "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
+  const ls = line.split("\n").flatMap(p=>wrapLines(p, cw-32)); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+46 + (i-(ls.length-1)/2)*18));
   // the player closes it when done reading
-  const bw = 120, bh = 38, byy = cy+80, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
+  const bw = 120, bh = 38, byy = cy+90, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
   let sx = pul, sy = pul;
   if(out!=null){ const k = Math.sin(Math.min(1, out/.16)*Math.PI); sx = 1+.1*k; sy = 1-.14*k; }   // tapped: a gummy squash
   ctx.save(); ctx.translate(cx, byy); ctx.scale(sx,sy);
