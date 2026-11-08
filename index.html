@@ -315,6 +315,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @media (prefers-reduced-motion:reduce){.sheet.panelIn,.sheet.panelOut{animation-duration:.01s}}
 .sheet h2{margin:0;font:400 34px var(--display);color:#c2370f}
 .sheet .sub{margin:0;font-size:14px;font-weight:500;max-width:34ch}
+#shopSub,#albumSub{white-space:pre-line}   /* one sentence per line */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));grid-auto-rows:1fr;gap:8px;width:100%}   /* every tile the same size */
 .item>span{white-space:nowrap}.item .buy,.item.mystery .hint{margin-top:auto}
 .look{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 8px;border-radius:16px;border:3px solid transparent;cursor:pointer;font:600 12px var(--body);color:#5b3210}
@@ -512,7 +513,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
       <h2>Settings</h2>
       <div class="setRow volRow"><span>Music</span><input type="range" class="vol" id="rMusic" min="0" max="100" step="1" aria-label="Music volume"></div>
       <div class="setRow volRow"><span>Sounds</span><input type="range" class="vol" id="rSound" min="0" max="100" step="1" aria-label="Sound effects volume"></div>
-      <p class="muteNote" id="muteNote" hidden>Sound is off. Move a slider to turn it on.</p>
+      <p class="muteNote" id="muteNote" hidden>Sound is off.<br>Move a slider to turn it on.</p>
       <div class="setRow"><span>Screen shake</span><button class="tog" id="tShake"></button></div>
       <div class="setRow" id="vibeRow"><span>Vibration</span><button class="tog" id="tVibe"></button></div>
       <div class="setRow"><span>Erase all progress</span><button class="buy" id="tReset">Erase</button></div>
@@ -523,7 +524,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
   <div id="levels" class="overlay" hidden>
     <div class="sheet">
       <h2>Levels</h2>
-      <p class="sub">Pick the ring to start from. Reach a ring to unlock it.</p>
+      <p class="sub">Pick the ring to start from.<br>Reach a ring to unlock it.</p>
       <div class="lvlNav"><button class="pg" id="pgPrev" aria-label="Previous page">‹</button><span id="pgLabel"></span><button class="pg" id="pgNext" aria-label="Next page">›</button></div>
       <div class="lvlGrid" id="lvlGrid"></div>
       <button class="pill" id="lvlClose">Done</button>
@@ -2693,7 +2694,7 @@ const POWER_INFO = {
   ball:["Power ball","Rockets you up several rings!"], shield:["Shield","Bounces you back from one hit."],
   slow:["Slow clock","Monsters and your ring timer slow down."], fast:["Fast clock","Careful! Monsters speed up.",1],
   potion:["Tiny potion","Shrink down and slip through gaps."], friend:["Monster pal","Eats one monster for you!"],
-  magnet:["Magnet","Pulls in the candies on the rings ahead."], freeze:["Freeze","Monsters stop. Fly through and smash them!"],
+  magnet:["Magnet","Pulls in the candies on the rings ahead."], freeze:["Freeze","Monsters stop.\nFly through and smash them!"],
   rain:["Candy rain","Catch the candies falling from the sky!"], fog:["No guide","The dotted guide hides for a few rings.",1],
   wobble:["Wobbly rings","The next rings slide side to side.",1], gift:["Gift box","Unlocks something new in the shop!"], blast:["Shockwave","Blows every monster off the screen!"]
 };
@@ -2724,7 +2725,7 @@ function drawIntroCard(){
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
   ctx.fillStyle = bad ? "#ff8a7a" : "#c2370f"; ctx.font = '400 26px "Lilita One", system-ui'; ctx.fillText((bad?"Uh oh! ":"New! ") + title, cx, cy+6);
   ctx.fillStyle = bad ? "#ffe0dc" : "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
-  const ls = wrapLines(line, cw-32); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+38 + (i-(ls.length-1)/2)*18));
+  const ls = line.split("\n").flatMap(p=>wrapLines(p, cw-32)); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+38 + (i-(ls.length-1)/2)*18));
   // the player closes it when done reading
   const bw = 120, bh = 38, byy = cy+80, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
   let sx = pul, sy = pul;
@@ -3891,24 +3892,24 @@ function renderWardrobe(){
   if(wardTab==="colors"){
     const list = SKINS.filter(k=>k.price===0 || shop.skins.includes(k.id)).sort((a,b)=>a.price-b.price);
     for(const k of list) wardCard(grid, {name:k.name, owned:true, on: shop.skin===k.id, paint: c=>paintSkin(c, k.id), use: ()=>{ shop.skin = k.id; saveShop(); }});
-    $("albumSub").textContent = `${list.length} of ${SKINS.length} colors. Tap one to use it.`;
+    $("albumSub").textContent = `${list.length} of ${SKINS.length} colors\nTap one to use it!`;
   } else if(wardTab==="pets"){
     wardCard(grid, {name:"No pet", owned:true, on: !shop.pet, paint: c=>{ const c2=c.getContext("2d"); c2.strokeStyle="#c9b8a8"; c2.lineWidth=6; c2.beginPath(); c2.arc(64,64,30,0,6.28); c2.moveTo(43,43); c2.lineTo(85,85); c2.stroke(); }, use: ()=>{ shop.pet = ""; saveShop(); }});
     const list = PETS.filter(k=>shop.pets.includes(k.id)).sort((a,b)=>a.price-b.price);
     for(const k of list) wardCard(grid, {name:k.name, owned:true, on: shop.pet===k.id, paint: c=>paintPet(c, k.id), use: ()=>{ shop.pet = k.id; saveShop(); }});
-    $("albumSub").textContent = `${list.length} of ${PETS.length} pets. Tap one to use it.`;
+    $("albumSub").textContent = `${list.length} of ${PETS.length} pets\nTap one to use it!`;
   } else if(wardTab==="looks"){
     wardCard(grid, {name:"No look", owned:true, on: curLook("none"), paint: c=>paintLook(c, null, false, 2.4), use: ()=>wearLook("none")});
     const list = SHOP_LOOKS.filter(k=>earned.has(k.id)).sort((a,b)=>a.price-b.price);
     for(const k of list){ const a = ACCS.find(x=>x.id===k.id);
       wardCard(grid, {name:a.name, owned:true, on: curLook(k.id), paint: c=>paintLook(c, k.id, false, 2.4), use: ()=>wearLook(k.id)}); }
-    $("albumSub").textContent = `${list.length} of ${SHOP_LOOKS.length} looks. Tap one to wear it.`;
+    $("albumSub").textContent = `${list.length} of ${SHOP_LOOKS.length} looks\nTap one to wear it!`;
   } else {
     let n = 0;
     for(const id of PRIZES){ const a = ACCS.find(x=>x.id===id), owned = earned.has(id); if(owned) n++;
       wardCard(grid, {prize:true, name:a.name, owned, on: owned && curLook(id), hint: id==="crown" ? "Reach the Golden Ring" : `Reach ring ${prizeRing(id)}`,
         paint: c=>paintLook(c, id, false, 2.4), use: ()=>wearLook(id)}); }
-    $("albumSub").textContent = `${n} of ${PRIZES.length} prizes. Win one every 20 rings, and the crown on the Golden Ring. They can't be bought.`;
+    $("albumSub").textContent = `${n} of ${PRIZES.length} prizes\nWin one every 20 rings!`;
   }
   T = liveT;
 }
@@ -4485,8 +4486,8 @@ function renderShop(){
     : shopTab==="looks" ? SHOP_LOOKS.map(x=>({id:x.id, price:x.price, name:ACCS.find(a=>a.id===x.id).name})) : BOOSTS;
   const sorted = [...list].sort((a,b)=>(a.price||0)-(b.price||0));   // cheapest first (same price keeps its order)
   discInit();
-  $("shopSub").textContent = shopTab==="skins" ? "New colors for Flubbie. Change them in your Wardrobe." : shopTab==="pets" ? "Little friends that float next to you. Change them in your Wardrobe."
-    : shopTab==="looks" ? "Looks to buy. Wear them in your Wardrobe." : (state==="play"||state==="rising") ? "Bought power-ups work as soon as you go back to the game." : "Bought power-ups work as soon as your next run starts.";
+  $("shopSub").textContent = shopTab==="skins" ? "New colors for Flubbie.\nChange them in your Wardrobe." : shopTab==="pets" ? "Little friends that float next to you.\nChange them in your Wardrobe."
+    : shopTab==="looks" ? "Looks to buy.\nWear them in your Wardrobe." : (state==="play"||state==="rising") ? "Bought power-ups work as soon as you go back to the game." : "Bought power-ups work as soon as your next run starts.";
   if(shopTab!=="boosts"){ const pre = shopTab==="skins"?"skin:":shopTab==="pets"?"pet:":"look:"; for(const k of [...shopNew]) if(k.startsWith(pre)) setTimeout(()=>{ shopNew.delete(k); saveDisc(); }, 0); }
   sorted.forEach((it, idx)=>{
     const price = it.price;
@@ -4747,7 +4748,7 @@ function buildInfo(){
       const [name, line] = POWER_INFO[it], row = document.createElement("div"); row.className = "prow" + (bad?" bad":"");
       const c = document.createElement("canvas"); c.width = 104; c.height = 104; row.appendChild(c);
       const c2 = c.getContext("2d"), old = ctx; ctx = c2; ctx.setTransform(2,0,0,2,52,54); drawItem(it, "cake"); ctx = old;
-      const txt = document.createElement("div"); txt.innerHTML = `<b>${name}</b><span>${line}</span>`; row.appendChild(txt);
+      const txt = document.createElement("div"); txt.innerHTML = `<b>${name}</b><span>${line.replace("\n","<br>")}</span>`; row.appendChild(txt);
       $(box).appendChild(row); toImg(c);
     }
   }
