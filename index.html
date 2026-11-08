@@ -237,7 +237,8 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .wtab{border:0;background:transparent;font:600 14px var(--body);color:#7a4a1c;padding:6px 16px;border-radius:99px;cursor:pointer;white-space:nowrap}
 .wtab.on{background:#fff;color:#c2370f;box-shadow:0 2px 0 rgba(0,0,0,.08)}
 .moreBtn{border:0;cursor:pointer;margin-top:6px;padding:10px 22px;border-radius:99px;color:#fff;font:400 18px var(--display);letter-spacing:.02em;
-  background:#e0408e;box-shadow:0 4px 0 #a01a5e}
+  position:relative;background:linear-gradient(#ffb44a,#f2760a);box-shadow:0 4px 0 #a84a00;text-shadow:0 1px 0 #a84a00}
+.moreBtn::after{content:"";position:absolute;left:12%;right:12%;top:4px;height:9px;border-radius:99px;background:rgba(255,255,255,.4);pointer-events:none}
 .moreBtn[hidden]{display:none}
 .look.prize{background:linear-gradient(#fff6c8,#ffe08a);border-color:#f0c040}
 .look.prize.locked{background:rgba(240,192,64,.18);border-color:rgba(240,192,64,.5)}
@@ -260,9 +261,9 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newDot{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#e8263a;border:2px solid #fff;animation:dotPop 1.2s ease-in-out infinite}
 @keyframes dotPop{50%{transform:scale(1.2)}}
 .item.tap{cursor:pointer;transition:transform .1s}.item.tap:active{transform:scale(.96)}
-/* candy shop: sunken tab rail with a glossy pink tab, raised tiles with a lip and a shine, items on a soft golden glow, still-wrapped presents for what is not found yet */
+/* candy shop: sunken tab rail with a glossy blue tab, raised tiles with a lip and a shine, items on a soft golden glow, still-wrapped presents for what is not found yet */
 .tabs{background:#f0d2a4;box-shadow:inset 0 2px 3px rgba(150,90,30,.3)}
-.tab.on,.itab.on,.wtab.on{position:relative;color:#fff;background:linear-gradient(#ff8ac4,#e0408e);box-shadow:0 3px 0 #a01a5e;text-shadow:0 1px 0 #a01a5e}
+.tab.on,.itab.on,.wtab.on{position:relative;color:#fff;background:linear-gradient(#7ab8ff,#3a6ae0);box-shadow:0 3px 0 #1a3a9a;text-shadow:0 1px 0 #1a3a9a}
 .tab.on::after,.itab.on::after,.wtab.on::after{content:"";position:absolute;left:14%;right:14%;top:3px;height:7px;border-radius:99px;background:rgba(255,255,255,.45)}
 .item,.look{position:relative;background:linear-gradient(#fffdf6,#fff0d6);box-shadow:0 4px 0 #e2b67a,0 6px 8px rgba(150,90,30,.2),inset 0 0 0 2px #fff}
 .item::after,.look::after{content:"";position:absolute;left:12%;right:12%;top:4px;height:9px;border-radius:99px;background:rgba(255,255,255,.75);pointer-events:none}
@@ -270,13 +271,17 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .item.mystery,.look.locked{background:linear-gradient(#f7e2c2,#efd2a6);box-shadow:0 4px 0 #d3a464,inset 0 0 0 2px rgba(255,255,255,.6)}
 .look.locked canvas,.look.locked img{background:none}
 .gift{position:relative;z-index:1;width:46px;height:38px;margin:26px 0 2px;border-radius:6px;
-  background:linear-gradient(90deg,transparent 40%,#ffd23a 40% 60%,transparent 60%),repeating-linear-gradient(45deg,#ff7ab8 0 6px,#ff9ccb 6px 12px);box-shadow:inset 0 -5px 0 rgba(0,0,0,.12)}
-.gift::before{content:"";position:absolute;left:-3px;right:-3px;top:-8px;height:11px;border-radius:4px;background:linear-gradient(90deg,#e0408e 40%,#ffd23a 40% 60%,#e0408e 60%)}
+  background:linear-gradient(90deg,transparent 40%,var(--gr) 40% 60%,transparent 60%),repeating-linear-gradient(45deg,var(--g1) 0 6px,var(--g2) 6px 12px);box-shadow:inset 0 -5px 0 rgba(0,0,0,.12)}
+.gift::before{content:"";position:absolute;left:-3px;right:-3px;top:-8px;height:11px;border-radius:4px;background:linear-gradient(90deg,var(--gl) 40%,var(--gr) 40% 60%,var(--gl) 60%)}
+/* each present in its own wrapping paper: paper stripes, lid, ribbon */
+.gift.g0{--g1:#5aa8ff;--g2:#86c0ff;--gl:#2a7ae0;--gr:#ffd23a}.gift.g1{--g1:#5ccf55;--g2:#86e07e;--gl:#2f9a2c;--gr:#ffd23a}
+.gift.g2{--g1:#ffa23a;--g2:#ffc070;--gl:#e06a10;--gr:#e8263a}.gift.g3{--g1:#a06ae8;--g2:#bf96f2;--gl:#7a3ad0;--gr:#ffd23a}
+.gift.g4{--g1:#ff6a6a;--g2:#ff9a9a;--gl:#d02a3a;--gr:#ffd23a}
 .gift::after{content:"";position:absolute;left:50%;top:-19px;translate:-50% 0;width:32px;height:14px;
-  background:radial-gradient(circle at 50% 80%,#f0a800 3.5px,transparent 4px),radial-gradient(8px 5.5px at 9px 8px,#ffd23a 85%,transparent 100%),radial-gradient(8px 5.5px at 23px 8px,#ffd23a 85%,transparent 100%)}
+  background:radial-gradient(circle at 50% 80%,rgba(0,0,0,.25) 3.5px,transparent 4px),radial-gradient(8px 5.5px at 9px 8px,var(--gr) 85%,transparent 100%),radial-gradient(8px 5.5px at 23px 8px,var(--gr) 85%,transparent 100%);filter:brightness(1.05)}
 
 .item canvas,.item img{width:64px;height:64px}
-.buy{border:0;border-radius:99px;padding:4px 10px;font:600 12px var(--body);cursor:pointer;background:linear-gradient(#ff7ab8,#e0408e);box-shadow:0 2px 0 #a01a5e;color:#fff;min-width:64px}
+.buy{border:0;border-radius:99px;padding:4px 10px;font:600 12px var(--body);cursor:pointer;background:linear-gradient(#ffb44a,#f2760a);box-shadow:0 2px 0 #a84a00;color:#fff;min-width:64px}
 .buy:disabled{background:#c9b8a8;box-shadow:0 2px 0 #9a8a7a;cursor:not-allowed}
 .sheet{scrollbar-width:none;overflow-x:hidden;box-sizing:border-box;width:min(100%,440px);max-height:100%;overflow:auto;background:var(--candyPanel);border:6px solid #fff;box-shadow:var(--candyRim);border-radius:28px;
   padding:18px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#5b3210}
@@ -2591,8 +2596,10 @@ function drawPowerHud(){
     ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x+R, top+R, R-5, 0, 6.28); ctx.fill();
     ctx.save(); ctx.translate(x+R, top+R); ctx.scale(.55,.55); drawItem(e.icon); ctx.restore();
     const lx = x+R*2, bw = w-R*2-12, by = top+26;
-    ctx.font = '15px "Lilita One", system-ui'; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
-    ctx.lineWidth = 4.5; ctx.strokeStyle = ed; ctx.strokeText(e.label.toUpperCase(), lx, top+20); ctx.fillStyle = "#fff"; ctx.fillText(e.label.toUpperCase(), lx, top+20);
+    const lab = e.label.toUpperCase(); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
+    ctx.font = '15px "Lilita One", system-ui'; const lw = ctx.measureText(lab).width;
+    if(lw > bw) ctx.font = `${(15*bw/lw).toFixed(1)}px "Lilita One", system-ui`;   // long names shrink to stay inside the pill
+    ctx.lineWidth = 4.5; ctx.strokeStyle = ed; ctx.strokeText(lab, lx, top+20); ctx.fillStyle = "#fff"; ctx.fillText(lab, lx, top+20);
     const max = hudMax[k] || 1, frac = clamp(e.v/max, 0, 1);
     ctx.fillStyle = "rgba(0,0,0,.22)"; rr(lx, by, bw, 8, 4); ctx.fill();
     if(e.unit==="s"){   // a striped candy stick that empties
@@ -4432,12 +4439,12 @@ function renderShop(){
   $("shopSub").textContent = shopTab==="skins" ? "New colors for Flubbie. Change them in your Wardrobe." : shopTab==="pets" ? "Little friends that float next to you. Change them in your Wardrobe."
     : shopTab==="looks" ? "Looks to buy. Wear them in your Wardrobe." : (state==="play"||state==="rising") ? "Bought power-ups work as soon as you go back to the game." : "Bought power-ups work as soon as your next run starts.";
   if(shopTab!=="boosts"){ const pre = shopTab==="skins"?"skin:":shopTab==="pets"?"pet:":"look:"; for(const k of [...shopNew]) if(k.startsWith(pre)) setTimeout(()=>{ shopNew.delete(k); saveDisc(); }, 0); }
-  sorted.forEach(it=>{
+  sorted.forEach((it, idx)=>{
     const price = it.price;
     const key = shopTab==="skins" ? "skin:"+it.id : shopTab==="pets" ? "pet:"+it.id : shopTab==="looks" ? "look:"+it.id : null;
     if(key && it.price>0 && !isFound(key)){   // not found yet: a mystery
       const card = document.createElement("div"); card.className = "item mystery";
-      const g = document.createElement("i"); g.className = "gift"; card.appendChild(g);   // still wrapped: a present
+      const g = document.createElement("i"); g.className = "gift g" + (idx % 5); card.appendChild(g);   // still wrapped: a present
       const nm = document.createElement("span"); nm.textContent = "???"; card.appendChild(nm);
       const hint = document.createElement("small"); hint.className = "hint"; hint.textContent = `From ring ${LOCKS.find(x=>x.key===key).ring}`; card.appendChild(hint);
       grid.appendChild(card); return;
