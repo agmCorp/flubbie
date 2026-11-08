@@ -2714,18 +2714,29 @@ function panelOutY(t, d){
   return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k*k);
 }
 /* the candy panel and title ribbon of the cards, drawn on the canvas: caramel rim with a lip, white edge, cream with dots, a shine on top */
-function candyPanel(x, y, w, h){
-  ctx.fillStyle = "#a8662a"; rr(x-5, y+4, w+10, h+10, 31); ctx.fill();
-  ctx.fillStyle = "#d99a52"; rr(x-5, y-5, w+10, h+10, 31); ctx.fill();
+function candyPanel(x, y, w, h, sour){   // sour: the strawberry-red panel of the bad power-ups
+  ctx.fillStyle = sour ? "#8c0c12" : "#a8662a"; rr(x-5, y+4, w+10, h+10, 31); ctx.fill();
+  ctx.fillStyle = sour ? "#e8263a" : "#d99a52"; rr(x-5, y-5, w+10, h+10, 31); ctx.fill();
   ctx.fillStyle = "#fff"; rr(x, y, w, h, 26); ctx.fill();
   ctx.save(); rr(x+6, y+6, w-12, h-12, 21);
-  const g = ctx.createLinearGradient(0, y, 0, y+h); g.addColorStop(0, "#fff6e2"); g.addColorStop(1, "#fbe2b8"); ctx.fillStyle = g; ctx.fill(); ctx.clip();
+  const g = ctx.createLinearGradient(0, y, 0, y+h); g.addColorStop(0, sour ? "#fff2f2" : "#fff6e2"); g.addColorStop(1, sour ? "#ffd2d2" : "#fbe2b8"); ctx.fillStyle = g; ctx.fill(); ctx.clip();
   for(let yy = y+6; yy < y+h; yy += 22) for(let xx = x+6; xx < x+w; xx += 22){
-    ctx.fillStyle = "rgba(255,150,190,.2)"; ctx.beginPath(); ctx.arc(xx, yy, 3, 0, 6.28); ctx.fill();
-    ctx.fillStyle = "rgba(255,190,110,.2)"; ctx.beginPath(); ctx.arc(xx+11, yy+11, 3, 0, 6.28); ctx.fill(); }
+    ctx.fillStyle = sour ? "rgba(232,38,58,.18)" : "rgba(255,150,190,.2)"; ctx.beginPath(); ctx.arc(xx, yy, 3, 0, 6.28); ctx.fill();
+    ctx.fillStyle = sour ? "rgba(255,110,110,.18)" : "rgba(255,190,110,.2)"; ctx.beginPath(); ctx.arc(xx+11, yy+11, 3, 0, 6.28); ctx.fill(); }
   const sh = ctx.createLinearGradient(0, y+6, 0, y+30); sh.addColorStop(0, "rgba(255,255,255,.8)"); sh.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = sh; ctx.beginPath(); ctx.ellipse(x+w/2, y+16, w*.42, 12, 0, 0, 6.28); ctx.fill();
   ctx.restore();
+}
+/* where an item's drawing really is (some reach up, some hang down), measured once on a spare canvas */
+const itemBox = {};
+function itemBounds(it){
+  if(itemBox[it]) return itemBox[it];
+  const c = document.createElement("canvas"); c.width = c.height = 200; const old = ctx; ctx = c.getContext("2d");
+  ctx.setTransform(1,0,0,1,100,100); drawItem(it, "cupcake"); ctx = old;
+  const d = c.getContext("2d").getImageData(0,0,200,200).data; let x0=200, y0=200, x1=0, y1=0;
+  for(let y=0;y<200;y++) for(let x=0;x<200;x++) if(d[(y*200+x)*4+3] > 20){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; }
+  const b = x1<x0 ? {cx:0, cy:0, w:40, h:40} : {cx:(x0+x1)/2-100, cy:(y0+y1)/2-100, w:x1-x0+1, h:y1-y0+1};
+  return itemBox[it] = b;
 }
 function candyRibbon(cx, y, text, [light, main, dark]){
   ctx.font = '400 30px "Lilita One", system-ui'; const w = ctx.measureText(text).width + 56, h = 48;
@@ -2745,17 +2756,23 @@ function drawIntroCard(){
   const [title, line, bad] = POWER_INFO[introCard.it], t = introCard.t, out = introCard.out;
   const a = out==null ? clamp(t/.3,0,1) : 1-clamp(out/.46,0,1), dy = out==null ? panelInY(t, H) : panelOutY(out, H);
   ctx.save(); ctx.globalAlpha = a*.45; ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H); ctx.globalAlpha = 1;
-  const cw = Math.min(W-36, 300), ch = 252, cx = W/2, cy = H*.42 + dy;
-  candyPanel(cx-cw/2, cy-ch/2, cw, ch);
-  ctx.save(); ctx.translate(cx, cy-64); ctx.scale(1.7,1.7); drawItem(introCard.it, "cupcake"); ctx.restore();
-  candyRibbon(cx, cy-ch/2, bad ? "Uh oh!" : "New!", bad ? ["#ff7a6a","#e8263a","#8c0c12"] : ["#ffe066","#f0a000","#a86400"]);
+  const sk = bad && out==null && t>.55 && t<1.2 ? Math.sin((t-.55)*42)*9*(1-(t-.55)/.65) : 0;   // a bad one lands with a shiver
+  const cw = Math.min(W-36, 300), ch = 270, cx = W/2 + sk, cy = H*.42 + dy;
+  candyPanel(cx-cw/2, cy-ch/2, cw, ch, bad);
+  { const b = itemBounds(introCard.it), k = Math.min(1.7, 92/b.h, 150/b.w);   // the drawing sits centred in the room between the ribbon and the name
+    ctx.save(); ctx.translate(cx, cy-52); ctx.rotate(sk*.03); ctx.scale(k,k); ctx.translate(-b.cx, -b.cy); drawItem(introCard.it, "cupcake"); ctx.restore(); }
+  candyRibbon(cx, cy-ch/2, bad ? "Uh oh!" : "Yay!", bad ? ["#ff7a6a","#e8263a","#8c0c12"] : ["#ffe066","#f0a000","#a86400"]);
+  if(bad){ ctx.save(); ctx.translate(cx+cw/2-8, cy-ch/2+34); ctx.rotate(.2);   // a warning sticker on the corner
+    ctx.fillStyle = "#8c0c12"; ctx.beginPath(); ctx.arc(0, 3, 20, 0, 6.28); ctx.fill();
+    ctx.fillStyle = "#e8263a"; ctx.beginPath(); ctx.arc(0, 0, 20, 0, 6.28); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; ctx.stroke();
+    ctx.fillStyle = "#fff"; ctx.font = '400 28px "Lilita One", system-ui'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("!", 0, 1); ctx.restore(); }
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
-  ctx.font = '400 28px "Lilita One", system-ui'; ctx.lineWidth = 8; ctx.strokeStyle = "#fff"; ctx.strokeText(title, cx, cy+14);   // sticker lettering
-  ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; ctx.fillText(title, cx, cy+14);
+  ctx.font = '400 28px "Lilita One", system-ui'; ctx.lineWidth = 8; ctx.strokeStyle = "#fff"; ctx.strokeText(title, cx, cy+22);   // sticker lettering
+  ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; ctx.fillText(title, cx, cy+22);
   ctx.fillStyle = "#3d2416"; ctx.font = '600 15px "Fredoka", system-ui';
-  const ls = line.split("\n").flatMap(p=>wrapLines(p, cw-32)); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+46 + (i-(ls.length-1)/2)*18));
+  const ls = line.split("\n").flatMap(p=>wrapLines(p, cw-32)); ls.forEach((l,i)=>ctx.fillText(l, cx, cy+56 + (i-(ls.length-1)/2)*18));
   // the player closes it when done reading
-  const bw = 120, bh = 38, byy = cy+90, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
+  const bw = 120, bh = 38, byy = cy+100, pul = t>.35 ? 1+Math.sin(t*4)*.05 : 1;   // it breathes like Play
   let sx = pul, sy = pul;
   if(out!=null){ const k = Math.sin(Math.min(1, out/.16)*Math.PI); sx = 1+.1*k; sy = 1-.14*k; }   // tapped: a gummy squash
   ctx.save(); ctx.translate(cx, byy); ctx.scale(sx,sy);
