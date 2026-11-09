@@ -116,7 +116,14 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @keyframes statBreath{0%,22%,100%{scale:1}8%{scale:1.08}15%{scale:.97}}
 .stat.endl{color:#6a3ad0;border:0;cursor:pointer;padding-right:6px;animation:endlGlow 2.4s ease-in-out infinite,statBreath 6s ease-in-out -4s infinite}.stat.endl small{color:#6a3ad0}
 .stat.endl.locked{color:#8a8a9a;animation:statBreath 6s ease-in-out -4s infinite;position:relative}.stat.endl.locked small{color:#8a8a9a}
-.stat.endl.locked .infBadge,.stat.endl.locked .goDot{background:#a8a8b8}
+/* the menu pills are candies of their own colour: gold for the best, purple for endless, pink for candies (as in the game) */
+.stat{border:3px solid #fff;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.stat small,.stat.endl small,.stat.endl.locked small{color:rgba(255,255,255,.9);opacity:1}
+#menuBest .stat:first-child{background:linear-gradient(#ffe066,#f0a000);box-shadow:0 4px 0 #a86400,0 8px 14px rgba(20,60,110,.2)}
+#menuBest .stat:last-child{background:linear-gradient(#ff8ac4,#e0408e);box-shadow:0 4px 0 #a01a5e,0 8px 14px rgba(20,60,110,.2)}
+#menuBest .stat.endl{background:linear-gradient(#b48aff,#7a3ad0);color:#fff;box-shadow:0 4px 0 #4a1a90,0 8px 14px rgba(20,60,110,.2)}
+#menuBest .stat.endl.locked{background:linear-gradient(#bcaedb,#8c7ab8);box-shadow:0 4px 0 #5a4a88,0 8px 14px rgba(20,60,110,.2)}
+.stat.endl.locked .infBadge,.stat.endl.locked .goDot{background:rgba(255,255,255,.3)}
 .stat.endl.shake{animation:lockShake .4s}
 @keyframes lockShake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 .lockTip{position:absolute;left:50%;bottom:calc(100% + 10px);translate:-50% 0;white-space:nowrap;background:#3d2416;color:#fff;font:600 13px var(--body);
@@ -126,7 +133,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @keyframes tipShow{0%{opacity:0;transform:translateY(6px)}12%,80%{opacity:1;transform:translateY(0)}100%{opacity:0}}
 .goDot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#7a4ae0,#3a7ae8);margin-left:2px}
 .goDot svg{margin-left:2px}
-@keyframes endlGlow{0%,100%{box-shadow:0 4px 0 rgba(60,30,140,.3),0 8px 18px rgba(20,60,110,.18)}50%{box-shadow:0 4px 0 rgba(60,30,140,.3),0 0 0 5px rgba(122,74,224,.25),0 8px 18px rgba(20,60,110,.18)}}
+@keyframes endlGlow{0%,100%{box-shadow:0 4px 0 #4a1a90,0 8px 18px rgba(20,60,110,.18)}50%{box-shadow:0 4px 0 #4a1a90,0 0 0 5px rgba(122,74,224,.25),0 8px 18px rgba(20,60,110,.18)}}
 .infSvg{width:1.3em;height:.72em;vertical-align:-.08em;overflow:visible;flex:none}
 .infBadge .infSvg{width:19px;height:11px}
 .endlessBtn .inf .infSvg{width:28px;height:16px;vertical-align:0}
@@ -814,8 +821,8 @@ let earned = new Set(), wear = "";
 try{ earned = new Set(JSON.parse(localStorage.getItem("flubble-looks")||"[]")); wear = localStorage.getItem("flubble-wear")||""; }catch(e){}
 function saveLooks(){ try{ localStorage.setItem("flubble-looks", JSON.stringify([...earned])); localStorage.setItem("flubble-wear", wear); }catch(e){} }
 function showMenuInfo(){
-  const trophy = `<svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M7 3h12v6a6 6 0 0 1-12 0z" fill="#ffc61a" stroke="#d98a00" stroke-width="1.4"/><path d="M7 5H3.5a3.5 3.5 0 0 0 4 4M19 5h3.5a3.5 3.5 0 0 1-4 4" fill="none" stroke="#d98a00" stroke-width="1.8"/><rect x="11" y="14" width="4" height="5" fill="#d98a00"/><rect x="7.5" y="19" width="11" height="4" rx="1.5" fill="#ffc61a" stroke="#d98a00" stroke-width="1.2"/><circle cx="11" cy="6.5" r="1.4" fill="#fff" opacity=".7"/></svg>`;
-  const candy = `<svg width="30" height="22" viewBox="-15 -11 30 22" aria-hidden="true"><path d="M-8 0 L-14 -7 L-13 7Z M8 0 L14 -7 L13 7Z" fill="#ff4f9a"/><ellipse rx="9" ry="7.5" fill="#ff6fb0"/><path d="M-5 -6 L1 6 M1 -7 L6 4" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+  const trophy = `<svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M7 3h12v6a6 6 0 0 1-12 0z" fill="#fff8e0" stroke="#a86400" stroke-width="1.4"/><path d="M7 5H3.5a3.5 3.5 0 0 0 4 4M19 5h3.5a3.5 3.5 0 0 1-4 4" fill="none" stroke="#a86400" stroke-width="1.8"/><rect x="11" y="14" width="4" height="5" fill="#a86400"/><rect x="7.5" y="19" width="11" height="4" rx="1.5" fill="#fff8e0" stroke="#a86400" stroke-width="1.2"/><circle cx="11" cy="6.5" r="1.4" fill="#fff" opacity=".7"/></svg>`;
+  const candy = `<svg width="30" height="22" viewBox="-15 -11 30 22" aria-hidden="true"><path d="M-8 0 L-14 -7 L-13 7Z M8 0 L14 -7 L13 7Z" fill="#ffd6ea"/><ellipse rx="9" ry="7.5" fill="#fff"/><path d="M-5 -6 L1 6 M1 -7 L6 4" stroke="#e0408e" stroke-width="2.4" stroke-linecap="round"/></svg>`;
   // the endless record only shows up once there is one
   const inf = `<span class="infBadge" aria-hidden="true">${INF}</span>`;
   // once unlocked, the endless pill is also the door to that mode: tap it to play
