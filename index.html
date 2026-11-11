@@ -182,7 +182,6 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 @keyframes endWiggle{0%,100%{transform:none}20%{transform:rotate(-3deg) scale(1.03)}40%{transform:rotate(3deg) scale(1.03)}60%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}}
 @keyframes endShine{0%{left:-60%;opacity:1}100%{left:130%;opacity:1}}
 @keyframes endGlow2{0%,100%{box-shadow:0 5px 0 #3a2296,0 10px 20px rgba(60,30,140,.3)}50%{box-shadow:0 5px 0 #3a2296,0 0 0 6px rgba(122,74,224,.3),0 10px 20px rgba(60,30,140,.3)}}
-@media (prefers-reduced-motion:reduce){.endlessBtn.unlock,.endlessBtn.unlock.wig,.endlessBtn.glow,.endlessBtn.unlock::after{animation:none}}
 .endlessBtn:disabled{filter:grayscale(.85);opacity:.75;cursor:default;box-shadow:0 5px 0 #555}
 .lvlNav{display:flex;align-items:center;gap:16px;font:400 20px var(--display);color:#c2370f}
 .pg{position:relative;width:40px;height:40px;border-radius:50%;border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#7ab8ff,#3a6ae0 60%,#1a3a9a);color:#fff;font:400 26px var(--display);cursor:pointer;box-shadow:0 3px 0 #1a3a9a}
@@ -440,8 +439,6 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newlook{font-family:var(--display);font-size:22px;color:#a35f00}
 .hint{font-family:var(--display);font-size:19px;margin-top:-6px}
 .hint.red{color:#b3241b}.hint.green{color:#2f7a22}
-/* with reduced motion only the endless decorations rest; screens still slide in and out and the lock still turns, they are short and tell what is happening */
-@media (prefers-reduced-motion:reduce){.stat,.stat.endl,.stat.endl.locked,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,#over.record #fHero,#over.record #fBest,#candy svg,.btn-retry,.look.prize:not(.locked)::before{animation:none}}
 #splash{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:grid;place-items:center;transition:opacity .45s ease;-webkit-tap-highlight-color:transparent}
 #splash img{width:min(68vw,320px);height:auto;opacity:0;animation:splashLogo .9s ease-out .25s forwards}
 .ghostPill{padding:10px 26px;border-radius:99px;border:2px solid rgba(255,255,255,.55);color:#fff;font:600 16px var(--body);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
