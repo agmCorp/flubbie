@@ -320,7 +320,6 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
   0%{transform:translateY(0);animation-timing-function:cubic-bezier(.2,.6,.4,1)}
   28%{transform:translateY(-22px);animation-timing-function:cubic-bezier(.45,0,.75,.5)}
   100%{transform:translateY(105vh)}}
-@media (prefers-reduced-motion:reduce){.sheet.panelIn,.sheet.panelOut{animation-duration:.01s}}
 .sheet h2{margin:0;font:400 34px var(--display);color:#c2370f}
 .sheet .sub{margin:0;font-size:14px;font-weight:500;max-width:34ch}
 #shopSub,#albumSub{white-space:pre-line}   /* one sentence per line */
@@ -441,7 +440,8 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .newlook{font-family:var(--display);font-size:22px;color:#a35f00}
 .hint{font-family:var(--display);font-size:19px;margin-top:-6px}
 .hint.red{color:#b3241b}.hint.green{color:#2f7a22}
-@media (prefers-reduced-motion:reduce){.stat,.stat.endl,.stat.endl.locked,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,.lock svg,.card,#over.record #fHero,#over.record #fBest,.card.cardOut,#candy svg,.btn-retry,.look.prize:not(.locked)::before,#win::before,#over.record::before,#win::after,#over.record::after{animation:none}}
+/* with reduced motion only the endless decorations rest; screens still slide in and out and the lock still turns, they are short and tell what is happening */
+@media (prefers-reduced-motion:reduce){.stat,.stat.endl,.stat.endl.locked,#menu .sun,.mcloud,.mbat,.mbat g,.flake,.title span,#playBtn,#over.record #fHero,#over.record #fBest,#candy svg,.btn-retry,.look.prize:not(.locked)::before{animation:none}}
 #splash{position:fixed;inset:0;z-index:9999;background:#1b1b1b;display:grid;place-items:center;transition:opacity .45s ease;-webkit-tap-highlight-color:transparent}
 #splash img{width:min(68vw,320px);height:auto;opacity:0;animation:splashLogo .9s ease-out .25s forwards}
 .ghostPill{padding:10px 26px;border-radius:99px;border:2px solid rgba(255,255,255,.55);color:#fff;font:600 16px var(--body);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
