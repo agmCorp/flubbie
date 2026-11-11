@@ -306,19 +306,19 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
   border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#ff6a5a,var(--red) 60%,var(--red-deep));box-shadow:0 3px 0 rgba(120,20,10,.35),0 4px 10px rgba(0,0,0,.2);display:grid;place-items:center;padding:0}
 /* panels and cards fly in from below, overshoot past their place and settle with a little bounce (like the original game);
    on close they lift a touch and then drop away */
-.sheet.panelIn{animation:panelIn .62s both}
-.sheet.panelOut{animation:panelOut .46s both;pointer-events:none}
-.card.cardOut{animation:panelOut .46s both}
+.sheet.panelIn{animation:panelIn .75s both}
+.sheet.panelOut{animation:panelOut .55s both;pointer-events:none}
+.card.cardOut{animation:panelOut .55s both}
 .overlay.leaving .card{pointer-events:none}   /* the backdrop still swallows taps, so nothing reaches the game until the card is gone */
 @keyframes panelIn{
-  0%{transform:translateY(105vh);animation-timing-function:cubic-bezier(.45,0,.9,.6)}
+  0%{transform:translateY(105vh);animation-timing-function:cubic-bezier(.15,.65,.35,1)}   /* it slows as it arrives, so the climb is seen */
   55%{transform:translateY(-26px);animation-timing-function:cubic-bezier(.3,0,.5,1)}
   72%{transform:translateY(9px);animation-timing-function:ease-in-out}
   86%{transform:translateY(-4px);animation-timing-function:ease-in-out}
   100%{transform:translateY(0)}}
 @keyframes panelOut{
   0%{transform:translateY(0);animation-timing-function:cubic-bezier(.2,.6,.4,1)}
-  28%{transform:translateY(-22px);animation-timing-function:cubic-bezier(.55,0,.9,.45)}
+  28%{transform:translateY(-22px);animation-timing-function:cubic-bezier(.45,0,.75,.5)}
   100%{transform:translateY(105vh)}}
 @media (prefers-reduced-motion:reduce){.sheet.panelIn,.sheet.panelOut{animation-duration:.01s}}
 .sheet h2{margin:0;font:400 34px var(--display);color:#c2370f}
@@ -335,7 +335,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #pause{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,calc(.25*var(--bd))),rgba(10,5,30,calc(.85*var(--bd))));cursor:pointer}
 /* the backdrops fade in once the card has nearly landed, and fade out before it drops away (--bd is their strength) */
 @property --bd{syntax:"<number>";inherits:false;initial-value:1}
-#pause,#over,#win{animation:bdIn .4s .3s both}
+#pause,#over,#win{animation:bdIn .4s .42s both}
 #pause.leaving,#over.leaving,#win.leaving{animation:bdOut .2s both}
 @keyframes bdIn{from{--bd:0}}
 @keyframes bdOut{to{--bd:0}}
@@ -346,7 +346,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #over{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,calc(.1*var(--bd))),rgba(10,5,30,calc(.7*var(--bd))));overflow:hidden}
 .card{position:relative;width:min(86%,330px);background:var(--candyPanel);border:6px solid #fff;
   border-radius:34px;padding:58px 20px 26px;box-shadow:var(--candyRim);
-  display:flex;flex-direction:column;align-items:center;gap:14px;animation:panelIn .62s both}
+  display:flex;flex-direction:column;align-items:center;gap:14px;animation:panelIn .75s both}
 /* candy panels: cream with soft pink and orange dots, a shine on top, a white edge and a caramel rim with a darker lip below */
 :root{--candyPanel:radial-gradient(closest-side,rgba(255,255,255,.8),rgba(255,255,255,0)) 50% 6px/84% 28px no-repeat,
   radial-gradient(circle,rgba(255,150,190,.2) 3px,transparent 3.5px) 0 0/22px 22px,radial-gradient(circle,rgba(255,190,110,.2) 3px,transparent 3.5px) 11px 11px/22px 22px,linear-gradient(#fff6e2,#fbe2b8);
@@ -391,11 +391,11 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #win,#over.record{overflow:hidden;background:radial-gradient(circle,rgba(255,230,140,calc(.6*var(--bd))),rgba(255,230,140,0) 45%),rgba(40,20,80,calc(.3*var(--bd)))}
 #win::before,#over.record::before{content:"";position:absolute;left:50%;top:50%;width:1400px;height:1400px;margin:-700px 0 0 -700px;pointer-events:none;
   background:repeating-conic-gradient(rgba(255,240,170,.6) 0 9deg,rgba(255,240,170,0) 9deg 22.5deg);
-  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);animation:raysTurn 24s linear infinite,raysIn .45s .35s both}
+  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);animation:raysTurn 24s linear infinite,raysIn .45s .45s both}
 #win.leaving::before,#over.record.leaving::before{animation:raysTurn 24s linear infinite,raysOut .2s both}
 @keyframes raysIn{from{opacity:0;scale:.15}}   /* a burst of light from behind the card */
 @keyframes raysOut{to{opacity:0;scale:.15}}
-#win::after,#over.record::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 16%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 84% 12%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 90% 58%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 10% 66%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 30% 88%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 74% 86%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 50% 8%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px);animation:twinkle 1.1s ease-in-out infinite alternate,sparkIn .35s .6s both}
+#win::after,#over.record::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 16%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 84% 12%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 90% 58%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 10% 66%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 30% 88%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 74% 86%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 50% 8%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px);animation:twinkle 1.1s ease-in-out infinite alternate,sparkIn .35s .75s both}
 #win.leaving::after,#over.record.leaving::after{animation:twinkle 1.1s ease-in-out infinite alternate,sparkOut .2s both}
 @keyframes sparkIn{from{scale:0}}
 @keyframes sparkOut{to{scale:0}}
@@ -1614,7 +1614,7 @@ function cardOut(ov, then){
   const wait = ov==="end" ? 0 : 200;   // first the backdrop fades away, then the card drops
   el.classList.add("leaving");
   el._drop = setTimeout(()=>{ card.classList.add("cardOut"); sfx("PanelOut",.7); }, wait);
-  el._out = setTimeout(()=>{ el.classList.remove("leaving"); card.classList.remove("cardOut"); el.hidden = true; then(); }, wait+450);
+  el._out = setTimeout(()=>{ el.classList.remove("leaving"); card.classList.remove("cardOut"); el.hidden = true; then(); }, wait+540);
 }
 function cardStay(ov){   // called back before it was gone: it flies in again
   const el = $(ov); if(!el.classList.contains("leaving")) return;
@@ -2724,16 +2724,16 @@ const POWER_INFO = {
 const easeIO = k=> k<.5 ? 2*k*k : 1-2*(1-k)*(1-k);
 function panelSeg(u, u0, u1, y0, y1, ease){ return y0 + (y1-y0)*ease((u-u0)/(u1-u0)); }
 function panelInY(t, d){
-  const u = t/.62;
-  return u>=1 ? 0 : u<.55 ? panelSeg(u,0,.55,d,-26,k=>k*k) : u<.72 ? panelSeg(u,.55,.72,-26,9,easeIO) : u<.86 ? panelSeg(u,.72,.86,9,-4,easeIO) : panelSeg(u,.86,1,-4,0,easeIO);
+  const u = t/.75;
+  return u>=1 ? 0 : u<.55 ? panelSeg(u,0,.55,d,-26,k=>1-(1-k)*(1-k)*(1-k)) : u<.72 ? panelSeg(u,.55,.72,-26,9,easeIO) : u<.86 ? panelSeg(u,.72,.86,9,-4,easeIO) : panelSeg(u,.86,1,-4,0,easeIO);
 }
 /* in-game notices pop in place instead: they grow past their size and settle, and on the way out swell a touch and shrink away */
 function popIn(t){ const u = t/.45; return u>=1 ? 1 : u<.5 ? panelSeg(u,0,.5,0,1.18,k=>1-(1-k)*(1-k)) : u<.75 ? panelSeg(u,.5,.75,1.18,.94,easeIO) : panelSeg(u,.75,1,.94,1,easeIO); }
 function popOut(t){ const u = Math.min(1, t/.3); return u<.3 ? panelSeg(u,0,.3,1,1.08,k=>1-(1-k)*(1-k)) : panelSeg(u,.3,1,1.08,0,k=>k*k); }
 function popScale(t, life){ return t > life-.3 ? popOut(t-(life-.3)) : popIn(t); }
 function panelOutY(t, d){
-  const u = Math.min(1, t/.46);
-  return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k*k);
+  const u = Math.min(1, t/.55);
+  return u<.28 ? panelSeg(u,0,.28,0,-22,k=>1-(1-k)*(1-k)) : panelSeg(u,.28,1,-22,d,k=>k*k);
 }
 /* the candy panel and title ribbon of the cards, drawn on the canvas: caramel rim with a lip, white edge, cream with dots, a shine on top */
 function candyPanel(x, y, w, h, sour){   // sour: the strawberry-red panel of the bad power-ups
@@ -2776,7 +2776,7 @@ function candyRibbon(cx, y, text, [light, main, dark]){
 function drawIntroCard(){
   if(!introCard) return;
   const [title, line, bad] = POWER_INFO[introCard.it], t = introCard.t, out = introCard.out;
-  const a = out==null ? clamp(t/.3,0,1) : 1-clamp(out/.46,0,1), dy = out==null ? panelInY(t, H) : panelOutY(out, H);
+  const a = out==null ? clamp(t/.3,0,1) : 1-clamp(out/.55,0,1), dy = out==null ? panelInY(t, H) : panelOutY(out, H);
   ctx.save(); ctx.globalAlpha = a*.45; ctx.fillStyle = "#000"; ctx.fillRect(0,0,W,H); ctx.globalAlpha = 1;
   const sk = bad && out==null && t>.55 && t<1.2 ? Math.sin((t-.55)*42)*9*(1-(t-.55)/.65) : 0;   // a bad one lands with a shiver
   const cw = Math.min(W-36, 300), ch = 270, cx = W/2 + sk, cy = H*.42 + dy;
@@ -4750,7 +4750,7 @@ for(const [ov, done] of [["settings","setClose"],["levels","lvlClose"],["credits
   const close = ()=>{   // play the drop-away, then really close
     if(sheet.classList.contains("panelOut")) return;
     sheet.classList.remove("panelIn"); sheet.classList.add("panelOut"); sfx("PanelOut",.7);
-    setTimeout(()=>{ sheet.classList.remove("panelOut"); $(done).click(); }, 450);
+    setTimeout(()=>{ sheet.classList.remove("panelOut"); $(done).click(); }, 540);
   };
   x.addEventListener("click", e=>{ e.stopPropagation(); close(); });
   sheet.insertBefore(x, sheet.firstChild);
@@ -4903,7 +4903,7 @@ function frame(now){
   if(paused){ T += dt; paintSleep(); }
   else if(introCard){   // the game waits until the player closes the power card and it has dropped away
     introCard.t += dt;
-    if(introCard.out!=null && (introCard.out += dt) >= .46){ const q = introCard.sfx; introCard = null; if(q) q.forEach(f=>f()); } }
+    if(introCard.out!=null && (introCard.out += dt) >= .55){ const q = introCard.sfx; introCard = null; if(q) q.forEach(f=>f()); } }
   else if(eatStop>0){ eatStop -= dt; updateCompanions(dt); }   // the world holds still while the friend lunges
   else update(dt);
   render();
