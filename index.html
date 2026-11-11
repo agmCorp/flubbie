@@ -1870,6 +1870,11 @@ function updateFinale(dt){
   confetti = confetti.filter(c=>{ c.x+=c.vx*dt+Math.sin(T*3+c.rot)*20*dt; c.y+=c.vy*dt; c.rot+=c.vr*dt; return c.y<H+20; });
   if(state==="finale" && finaleT>11.5 && $("finTap").hidden){ $("finTap").hidden = false; $("finTap").focus({preventScroll:true}); }   // the party goes on until a tap
 }
+/* on The End, Flubbie stands just above the sheet's ribbon, wherever the sheet ends up (taller with new shop finds), like the crew peeking over it */
+function endHeroY(){
+  const R0 = cv.getBoundingClientRect(), c = $("end").querySelector(".card").getBoundingClientRect();
+  return Math.min(H*.3, (c.top - R0.top)/scale - 26 - 56);
+}
 function showEnd(){
   state = "end";   // GrandFinale keeps playing until Home or Play again
   $("eCandy").innerHTML = candyTxt();
@@ -2130,7 +2135,7 @@ function update(dt){
   if(state==="play" && !player.fly){ const nx = rings[player.ring+1]; if(nx && nx.wob) nx.x = wobX(nx, T); }
   // camera
   if(state!=="menu"){
-    const target = state==="play" ? player.y - H*.7 : state==="rising" ? player.y - H*.66 : state==="finale" ? player.y - H*.6 : state==="end" ? player.y - H*.3 : (state==="dying"||state==="over") ? player.y - H*.5 : rings[player.ring].y - H*.7;
+    const target = state==="play" ? player.y - H*.7 : state==="rising" ? player.y - H*.66 : state==="finale" ? player.y - H*.6 : state==="end" ? player.y - endHeroY() : (state==="dying"||state==="over") ? player.y - H*.5 : rings[player.ring].y - H*.7;
     const boosting = player.fly&&player.fly.boost || player.boostLeft>0;
     const follow = state==="over" ? 0 : state==="dying" ? (dieT<(player.hold||0)+.45 ? 1.5 : 3.5) : state==="rising" ? 6 : (boosting?8:4.5);
     camY += (target-camY)*Math.min(1, dt*follow);
@@ -4662,9 +4667,9 @@ $("evBtn").addEventListener("click", ()=>{
   new ResizeObserver(fit).observe(col); new ResizeObserver(fit).observe(menu);
 }
 /* short screens: the end-of-run cards shrink just enough to fit whole, ribbon included (the scale property keeps their drop-in animation intact);
-   The End keeps the top of the screen free, so the party (sun, Flubbie with the crown, the crew) is never covered */
+   The End always leaves room above it for Flubbie and the crown (the camera puts him there, see endHeroY) */
 for(const id of ["over","win","end","pause"]){ const ov = $(id), card = ov.querySelector(".card");
-  const fit = ()=>{ if(ov.hidden || !card.offsetHeight) return; const room = id==="end" ? ov.clientHeight*.64 - 40 : ov.clientHeight - 56;
+  const fit = ()=>{ if(ov.hidden || !card.offsetHeight) return; const room = ov.clientHeight - (id==="end" ? 190 : 56);
     const k = Math.min(1, room / card.offsetHeight); card.style.scale = k < 1 ? k.toFixed(3) : ""; };
   new ResizeObserver(fit).observe(card); new ResizeObserver(fit).observe(ov);
 }
