@@ -433,7 +433,8 @@ body[data-ev="halloween"] .lock .petals > g:nth-child(3n) > path:first-child{fil
 #finTap .ghostPill{position:absolute;left:50%;bottom:calc(10vh + 64px);translate:-50% 0;border-color:rgba(255,255,255,.75);background:rgba(40,10,70,.25);text-shadow:0 2px 6px rgba(0,0,0,.4);animation:fadeIn .6s ease both}
 @keyframes fadeIn{from{opacity:0}}
 #end{justify-content:flex-end;padding-bottom:12px}
-#end .card{gap:12px;transform-origin:50% 100%}   /* it shrinks towards the bottom, where it sits */
+#end .card{gap:12px;transform-origin:50% 100%}
+body[data-ev="christmas"] .card::after{content:"";position:absolute;left:-22px;top:-24px;width:66px;height:52px;transform:rotate(-30deg);background:var(--holly) center/contain no-repeat;pointer-events:none}   /* a holly sprig on the corner of every card at Christmas */   /* it shrinks towards the bottom, where it sits */
 #end .endlessBtn{width:auto}
 #end .scores b{font-size:24px}
 #end .btn-retry{width:66px;height:66px;border-width:4px}
@@ -2801,6 +2802,9 @@ function itemBounds(it){
   const b = x1<x0 ? {cx:0, cy:0, w:40, h:40} : {cx:(x0+x1)/2-100, cy:(y0+y1)/2-100, w:x1-x0+1, h:y1-y0+1};
   return itemBox[it] = b;
 }
+const HOLLY = new Image();   // the holly sprig on the cards at Christmas, shared by the HTML cards and the power-up card
+HOLLY.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66 52"><defs><linearGradient id="l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4cc46a"/><stop offset="1" stop-color="#1f8a3e"/></linearGradient></defs><g stroke="#145a2a" stroke-width="1.6" stroke-linejoin="round" fill="url(#l)"><path d="M31 30 L24 24 Q20 27 17 23 Q12 25 10 20 Q5 21 4 16 Q10 12 16 14 Q19 10 23 13 Q27 10 29 15 Q34 16 31 22z"/><path d="M35 30 L42 24 Q46 27 49 23 Q54 25 56 20 Q61 21 62 16 Q56 12 50 14 Q47 10 43 13 Q39 10 37 15 Q32 16 35 22z"/></g><path d="M29 26 Q18 19 7 17 M37 26 Q48 19 59 17" stroke="#145a2a" stroke-width="1.2" fill="none" opacity=".6"/><g stroke="#8a0f18" stroke-width="1.4"><circle cx="27" cy="33" r="6.5" fill="#e0262e"/><circle cx="39" cy="33" r="6.5" fill="#ff3a44"/><circle cx="33" cy="25" r="6" fill="#d41e2a"/></g><g fill="#fff" opacity=".8"><circle cx="25" cy="31" r="1.8"/><circle cx="37" cy="31" r="1.8"/><circle cx="31" cy="23" r="1.6"/></g></svg>');
+document.documentElement.style.setProperty("--holly", `url("${HOLLY.src}")`);
 function candyRibbon(cx, y, text, [light, main, dark]){
   ctx.font = '400 30px "Lilita One", system-ui'; const w = ctx.measureText(text).width + 56, h = 48;
   ctx.fillStyle = dark;   // the ends fold back behind
@@ -2829,6 +2833,7 @@ function drawIntroCard(){
     ctx.fillStyle = "#8c0c12"; ctx.beginPath(); ctx.arc(0, 3, 20, 0, 6.28); ctx.fill();
     ctx.fillStyle = "#e8263a"; ctx.beginPath(); ctx.arc(0, 0, 20, 0, 6.28); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; ctx.stroke();
     ctx.fillStyle = "#fff"; ctx.font = '400 28px "Lilita One", system-ui'; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("!", 0, 1); ctx.restore(); }
+  if(EV.id==="christmas" && HOLLY.complete){ ctx.save(); ctx.translate(cx-cw/2+17, cy-ch/2+8); ctx.rotate(-.52); ctx.drawImage(HOLLY, -33, -26, 66, 52); ctx.restore(); }
   ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
   ctx.font = '400 28px "Lilita One", system-ui'; ctx.lineWidth = 8; ctx.strokeStyle = "#fff"; ctx.strokeText(title, cx, cy+22);   // sticker lettering
   ctx.fillStyle = bad ? "#e8263a" : "#f2490a"; ctx.fillText(title, cx, cy+22);
