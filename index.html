@@ -218,14 +218,22 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #doors{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden}
 #doors.active{pointer-events:auto}
 .door{position:absolute;top:0;bottom:0;width:50.5%;transition:transform .45s cubic-bezier(.65,0,.35,1)}
-.door.l{left:0;transform:translateX(calc(-100% - 24px));background:radial-gradient(circle at 100% 50%,#ffc25a 0,#ff7a1a 35%,#e0300f 80%);box-shadow:inset -6px 0 0 rgba(150,30,0,.25)}
-.door.r{right:0;transform:translateX(calc(100% + 24px));background:radial-gradient(circle at 0% 50%,#ffc25a 0,#ff7a1a 35%,#e0300f 80%);box-shadow:inset 6px 0 0 rgba(150,30,0,.25)}
+.door.l{left:0;transform:translateX(calc(-100% - 24px));background:linear-gradient(90deg,transparent 18%,rgba(255,255,255,.22) 26%,rgba(255,255,255,.05) 34%,transparent 40%),repeating-linear-gradient(135deg,rgba(255,235,200,.13) 0 16px,transparent 16px 34px),radial-gradient(circle at 100% 50%,#ffc25a 0,#ff7a1a 35%,#e0300f 80%);box-shadow:inset 10px 0 0 rgba(150,40,0,.28),inset 0 10px 0 rgba(255,220,160,.25),inset 0 -12px 0 rgba(150,40,0,.3),inset -10px 0 14px rgba(120,20,0,.35)}
+.door.r{right:0;transform:translateX(calc(100% + 24px));background:linear-gradient(90deg,transparent 60%,rgba(255,255,255,.22) 68%,rgba(255,255,255,.05) 76%,transparent 82%),repeating-linear-gradient(45deg,rgba(255,235,200,.13) 0 16px,transparent 16px 34px),radial-gradient(circle at 0% 50%,#ffc25a 0,#ff7a1a 35%,#e0300f 80%);box-shadow:inset -10px 0 0 rgba(150,40,0,.28),inset 0 10px 0 rgba(255,220,160,.25),inset 0 -12px 0 rgba(150,40,0,.3),inset 10px 0 14px rgba(120,20,0,.35)}
 #doors.closed .door{transform:none}
-/* cream piping along the inner edge of each door: closed, the two rows interlock like a zipper of frosting */
-.door::after{content:"";position:absolute;top:-14px;bottom:-14px;width:30px;
-  background:radial-gradient(circle at 50% 50%,#fffaf0 0 10px,#ffe4c4 10.5px 12px,rgba(200,90,30,.18) 12.5px 13.5px,transparent 14px) 0 0/30px 28px repeat-y}
-.door.l::after{right:-15px}
-.door.r::after{left:-15px;background-position:0 14px}
+/* once shut, a glint sweeps across the doors and a light runs down the candy buttons while the lock turns */
+.doorShine{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%) 120% 0/300% 100% no-repeat}
+#doors.closed .doorShine{animation:doorShine .6s .5s ease-in-out both}
+@keyframes doorShine{from{opacity:1;background-position:120% 0}to{opacity:1;background-position:-20% 0}}
+.doorGlow{position:absolute;left:50%;width:70px;margin-left:-35px;height:220px;top:-240px;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(255,250,210,.95),rgba(255,230,140,.5) 45%,rgba(255,200,80,0) 75%)}
+#doors.closed .doorGlow{animation:doorGlow 1s .45s ease-in-out both}
+@keyframes doorGlow{to{top:100%}}
+/* hard-candy doors: a darker rim, a shine and soft stripes; along the inner edge a row of candy buttons in every colour, and closed, the two rows interlock */
+.door::after{content:"";position:absolute;top:-14px;bottom:-14px;width:32px;
+  background:radial-gradient(circle at 42% 38%,#fff 0 3px,#ff5aa0 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 0px/32px 96px repeat-y,radial-gradient(circle at 42% 38%,#fff 0 3px,#3ec94a 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 32px/32px 96px repeat-y,radial-gradient(circle at 42% 38%,#fff 0 3px,#3a8ef0 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 64px/32px 96px repeat-y}
+.door.l::after{right:-16px}
+.door.r::after{left:-16px;background:radial-gradient(circle at 42% 38%,#fff 0 3px,#ffd23a 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 16px/32px 96px repeat-y,radial-gradient(circle at 42% 38%,#fff 0 3px,#a45ae8 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 48px/32px 96px repeat-y,radial-gradient(circle at 42% 38%,#fff 0 3px,#ff8a2a 4px 12px,rgba(90,20,0,.35) 12.5px 13.5px,transparent 14px) 0 80px/32px 96px repeat-y}
 .door::before{content:"";position:absolute;top:0;bottom:0;width:46px;
   background:radial-gradient(circle,#ff4f8a 0 2.4px,transparent 3px) 4px 6px/40px 70px,radial-gradient(circle,#3ec94a 0 2.4px,transparent 3px) 22px 30px/40px 70px,radial-gradient(circle,#2b8cff 0 2.4px,transparent 3px) 10px 52px/40px 70px,radial-gradient(circle,#ffd23a 0 2.4px,transparent 3px) 30px 64px/40px 70px}
 .door.l::before{right:12px}.door.r::before{left:12px}
@@ -694,7 +702,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
   </div>
 
   <div id="doors" aria-hidden="true">
-    <div class="door l"></div><div class="door r"></div>
+    <div class="door l"></div><div class="door r"></div><div class="doorShine"></div><div class="doorGlow"></div>
     <div class="lock">
       <svg viewBox="-100 -100 200 200"><defs><radialGradient id="gl" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".65"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g class="petals"></g></svg>
     </div>
