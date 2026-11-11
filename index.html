@@ -332,12 +332,18 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .look.on{border-color:#2fae2c;background:#fff}
 .pill{border:0;background:var(--red);color:#fff;font:400 20px var(--display);padding:8px 28px;border-radius:99px;cursor:pointer;box-shadow:0 4px 0 var(--red-deep)}
 /* a spotlight on the pause and fail cards: clear in the middle, dark at the edges */
-#pause{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,.25),rgba(10,5,30,.85));cursor:pointer}
+#pause{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,calc(.25*var(--bd))),rgba(10,5,30,calc(.85*var(--bd))));cursor:pointer}
+/* the backdrops fade in once the card has nearly landed, and fade out before it drops away (--bd is their strength) */
+@property --bd{syntax:"<number>";inherits:false;initial-value:1}
+#pause,#over,#win{animation:bdIn .4s .3s both}
+#pause.leaving,#over.leaving,#win.leaving{animation:bdOut .2s both}
+@keyframes bdIn{from{--bd:0}}
+@keyframes bdOut{to{--bd:0}}
 #sleepCube{width:96px;height:96px;margin:-4px 0 -6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.8}}
 
-#over{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,.1),rgba(10,5,30,.7));overflow:hidden}
+#over{background:radial-gradient(ellipse 70% 55% at 50% 48%,rgba(20,10,50,calc(.1*var(--bd))),rgba(10,5,30,calc(.7*var(--bd))));overflow:hidden}
 .card{position:relative;width:min(86%,330px);background:var(--candyPanel);border:6px solid #fff;
   border-radius:34px;padding:58px 20px 26px;box-shadow:var(--candyRim);
   display:flex;flex-direction:column;align-items:center;gap:14px;animation:panelIn .62s both}
@@ -382,11 +388,17 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .btn-small.blue{background:radial-gradient(circle at 40% 30%,#5ab8ff,var(--blue) 60%,#14549a)}
 #win,#end{background:rgba(0,0,0,.08)}
 /* golden rays turning slowly behind the win, the prize and the new record, with a warm glow and twinkling sparkles */
-#win,#over.record{overflow:hidden;background:radial-gradient(circle,rgba(255,230,140,.6),rgba(255,230,140,0) 45%),rgba(40,20,80,.3)}
+#win,#over.record{overflow:hidden;background:radial-gradient(circle,rgba(255,230,140,calc(.6*var(--bd))),rgba(255,230,140,0) 45%),rgba(40,20,80,calc(.3*var(--bd)))}
 #win::before,#over.record::before{content:"";position:absolute;left:50%;top:50%;width:1400px;height:1400px;margin:-700px 0 0 -700px;pointer-events:none;
   background:repeating-conic-gradient(rgba(255,240,170,.6) 0 9deg,rgba(255,240,170,0) 9deg 22.5deg);
-  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);animation:raysTurn 24s linear infinite}
-#win::after,#over.record::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 16%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 84% 12%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 90% 58%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 10% 66%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 30% 88%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 74% 86%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 50% 8%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px);animation:twinkle 1.1s ease-in-out infinite alternate}
+  -webkit-mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);mask:radial-gradient(circle,#000 22%,rgba(0,0,0,.7) 34%,transparent 50%);animation:raysTurn 24s linear infinite,raysIn .45s .35s both}
+#win.leaving::before,#over.record.leaving::before{animation:raysTurn 24s linear infinite,raysOut .2s both}
+@keyframes raysIn{from{opacity:0;scale:.15}}   /* a burst of light from behind the card */
+@keyframes raysOut{to{opacity:0;scale:.15}}
+#win::after,#over.record::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 16%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 84% 12%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 90% 58%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 10% 66%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 30% 88%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px),radial-gradient(circle at 74% 86%,#fff 0 2px,rgba(255,226,120,.85) 3px,rgba(255,226,120,0) 6px),radial-gradient(circle at 50% 8%,#fff 0 1.5px,rgba(255,226,120,.85) 2.5px,rgba(255,226,120,0) 4.5px);animation:twinkle 1.1s ease-in-out infinite alternate,sparkIn .35s .6s both}
+#win.leaving::after,#over.record.leaving::after{animation:twinkle 1.1s ease-in-out infinite alternate,sparkOut .2s both}
+@keyframes sparkIn{from{scale:0}}
+@keyframes sparkOut{to{scale:0}}
 #win .card,#over.record .card{z-index:1}
 @keyframes raysTurn{to{rotate:360deg}}
 @keyframes twinkle{from{opacity:.35}to{opacity:1}}
@@ -1599,12 +1611,14 @@ cv.addEventListener("pointerdown", e=>{ e.preventDefault(); ensureAudio(); jump(
 function cardOut(ov, then){
   const el = $(ov), card = el.querySelector(".card");
   if(el.hidden || el.classList.contains("leaving")) return;
-  el.classList.add("leaving"); card.classList.add("cardOut"); sfx("PanelOut",.7);
-  el._out = setTimeout(()=>{ el.classList.remove("leaving"); card.classList.remove("cardOut"); el.hidden = true; then(); }, 450);
+  const wait = ov==="end" ? 0 : 200;   // first the backdrop fades away, then the card drops
+  el.classList.add("leaving");
+  el._drop = setTimeout(()=>{ card.classList.add("cardOut"); sfx("PanelOut",.7); }, wait);
+  el._out = setTimeout(()=>{ el.classList.remove("leaving"); card.classList.remove("cardOut"); el.hidden = true; then(); }, wait+450);
 }
 function cardStay(ov){   // called back before it was gone: it flies in again
   const el = $(ov); if(!el.classList.contains("leaving")) return;
-  clearTimeout(el._out); el.classList.remove("leaving"); el.querySelector(".card").classList.remove("cardOut");
+  clearTimeout(el._out); clearTimeout(el._drop); el.classList.remove("leaving"); el.querySelector(".card").classList.remove("cardOut");
 }
 addEventListener("keydown", e=>{
   if(e.code==="Space"||e.code==="ArrowUp"){
