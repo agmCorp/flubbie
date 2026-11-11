@@ -382,6 +382,8 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 .row{display:flex;gap:18px}
 .btn-small{width:62px;height:62px;border-radius:50%;border:5px solid #fff;cursor:pointer;display:grid;place-items:center;
   box-shadow:0 5px 0 rgba(0,0,0,.25)}
+/* round buttons drop the browser's own padding (6px on the sides on phones), which pushed their icons off the centre */
+.round,.btn-small,.btn-retry,.xClose,.pg,.lv,#pauseBtn,#mute,#gameBtns button{padding:0}
 .btn-small.green{background:radial-gradient(circle at 40% 30%,#8ff07a,#2fae2c 60%,#1c6a1a)}
 .btn-small.blue{background:radial-gradient(circle at 40% 30%,#5ab8ff,var(--blue) 60%,#14549a)}
 #win,#end{background:rgba(0,0,0,.08)}
