@@ -1206,12 +1206,24 @@ function duckMusic(sec){
   clearInterval(duckTimer); musicDuck = .2; syncMusic();
   setTimeout(()=>{ duckTimer = setInterval(()=>{ musicDuck = Math.min(1, musicDuck + .1); syncMusic(); if(musicDuck>=1) clearInterval(duckTimer); }, 50); }, sec*1000);
 }
+/* the music never cuts: a track slides out and the next one slides in (each track's share of its volume is in fade) */
+const fade = {}, FADE_IN = 1, FADE_OUT = .6;
+let fadeTimer = 0;
+function musicWanted(n){ return n===wantTrack && musicOn && !muted && audioUnlocked && !paused && !document.hidden && !document.querySelector("#splash:not(.out)"); }   // silent until the splash is tapped
 function syncMusic(){
-  for(const n in tracks){ const a = tracks[n]; a.volume = VOL[n]*logGain(musVol)*musicDuck;
-    const on = n===wantTrack && musicOn && !muted && audioUnlocked && !paused && !document.hidden && !document.querySelector("#splash:not(.out)");   // silent until the splash is tapped
-    if(on){ if(a.paused){ const pr = a.play(); if(pr) pr.catch(()=>{ musicStuck = true; }); } } else if(!a.paused) a.pause();
+  if(document.hidden) for(const n in tracks) fade[n] = 0;   // a hidden page goes quiet at once (its timers barely run)
+  let moving = false;
+  for(const n in tracks){ const a = tracks[n], on = musicWanted(n), f = fade[n] || 0;
+    if(on){ if(a.paused){ const pr = a.play(); if(pr) pr.catch(()=>{ musicStuck = true; }); } } else if(f<=0 && !a.paused) a.pause();
+    a.volume = VOL[n]*logGain(musVol)*musicDuck*f;
+    if(f !== (on ? 1 : 0)) moving = true;
   }
   curTrack = wantTrack;
+  if(moving && !fadeTimer) fadeTimer = setInterval(()=>{
+    for(const n in tracks) fade[n] = musicWanted(n) ? Math.min(1, (fade[n]||0) + .03/FADE_IN) : Math.max(0, (fade[n]||0) - .03/FADE_OUT);
+    syncMusic();
+  }, 30);
+  else if(!moving && fadeTimer){ clearInterval(fadeTimer); fadeTimer = 0; }
 }
 let musicStuck = false, primed = false;
 /* inside the first tap: start and stop every other track silently, which unlocks them for later (iPhone needs this) */
@@ -4732,7 +4744,7 @@ function paintCrew(){
 /* the orange doors close with the candy lock, then open on the game */
 function doorsTo(fn){
   if(doorBusy) return; doorBusy = true;
-  const d = $("doors"); d.classList.add("active","closed"); ensureAudio();
+  const d = $("doors"); d.classList.add("active","closed"); ensureAudio(); playMusic(null);   // the music fades while the doors close
   { const t0 = performance.now(); const tryGate = ()=>{ if(!sfx("DoorsMove",.7) && performance.now()-t0 < 400) setTimeout(tryGate, 40); }; tryGate(); }
   setTimeout(()=>{ sfx("DoorsShut",.8) || snd(160,90,.18,"sine",.16); shake=0; }, 430);
   setTimeout(()=>{ fn(); }, 900);
