@@ -51,7 +51,7 @@ Tap the season button in the corner of the menu to switch between **Classic**, *
 <table align="center">
   <tr>
     <td align="center"><img src="docs/halloween.jpg" width="220" alt="Halloween look"><br><b>Halloween</b><br>Night skies, bats, and a witch, a mummy, a pumpkin and more</td>
-    <td align="center"><img src="docs/christmas.jpg" width="220" alt="Christmas look"><br><b>Christmas</b><br>A mountain lit up like a Christmas tree, Santa's sleigh over the menu, holly on the cards, falling snow, reindeer and Santa hats</td>
+    <td align="center"><img src="docs/christmas.jpg" width="220" alt="Christmas look"><br><b>Christmas</b><br>A mountain lit up like a Christmas tree, a snowman, Santa's sleigh flying by, holly on the cards, falling snow, reindeer and Santa hats</td>
   </tr>
 </table>
 
