@@ -408,7 +408,7 @@ body[data-ev="christmas"] #evBtn{background:rgba(255,255,255,.18)}
 #finTap .ghostPill{position:absolute;left:50%;bottom:calc(10vh + 64px);translate:-50% 0;border-color:rgba(255,255,255,.75);background:rgba(40,10,70,.25);text-shadow:0 2px 6px rgba(0,0,0,.4);animation:fadeIn .6s ease both}
 @keyframes fadeIn{from{opacity:0}}
 #end{justify-content:flex-end;padding-bottom:12px}
-#end .card{gap:12px}
+#end .card{gap:12px;transform-origin:50% 100%}   /* it shrinks towards the bottom, where it sits */
 #end .endlessBtn{width:auto}
 #end .scores b{font-size:24px}
 #end .btn-retry{width:66px;height:66px;border-width:4px}
@@ -4661,9 +4661,11 @@ $("evBtn").addEventListener("click", ()=>{
     col.style.transform = k < 1 ? `scale(${k.toFixed(3)})` : ""; };
   new ResizeObserver(fit).observe(col); new ResizeObserver(fit).observe(menu);
 }
-/* short screens: the end-of-run cards shrink just enough to fit whole, ribbon included (the scale property keeps their drop-in animation intact) */
+/* short screens: the end-of-run cards shrink just enough to fit whole, ribbon included (the scale property keeps their drop-in animation intact);
+   The End keeps the top of the screen free, so the party (sun, Flubbie with the crown, the crew) is never covered */
 for(const id of ["over","win","end","pause"]){ const ov = $(id), card = ov.querySelector(".card");
-  const fit = ()=>{ if(ov.hidden || !card.offsetHeight) return; const k = Math.min(1, (ov.clientHeight - 56) / card.offsetHeight); card.style.scale = k < 1 ? k.toFixed(3) : ""; };
+  const fit = ()=>{ if(ov.hidden || !card.offsetHeight) return; const room = id==="end" ? ov.clientHeight*.64 - 40 : ov.clientHeight - 56;
+    const k = Math.min(1, room / card.offsetHeight); card.style.scale = k < 1 ? k.toFixed(3) : ""; };
   new ResizeObserver(fit).observe(card); new ResizeObserver(fit).observe(ov);
 }
 /* secret: tap the "Flubbie" title 10 times in a row for god mode (only Erase in Settings undoes it) */
