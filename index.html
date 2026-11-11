@@ -194,7 +194,7 @@ body[data-ev="christmas"] #sleigh{display:block;animation:sleighRide 22s 3s line
 .lv{aspect-ratio:1;border-radius:50%;border:4px solid #e9c993;background:#fff;font:400 20px var(--display);color:#c2370f;cursor:pointer;display:grid;place-items:center;position:relative;padding:0}
 /* level rings are candies: orange, green with a gold ring for the chosen one, biscuit-colored while locked */
 .lv{border:3px solid #fff;background:radial-gradient(circle at 40% 30%,#ffb44a,#f2760a 60%,#a84a00);color:#fff;box-shadow:0 4px 0 #a84a00;text-shadow:0 2px 0 rgba(0,0,0,.25)}
-.lv::after,.pg::after{content:"";position:absolute;left:18%;top:9%;width:50%;height:24%;border-radius:50%;background:rgba(255,255,255,.4);pointer-events:none}
+.lv::after,.pg::after,.steps b::after{content:"";position:absolute;left:18%;top:9%;width:50%;height:24%;border-radius:50%;background:rgba(255,255,255,.4);pointer-events:none}
 .lv.sel{background:radial-gradient(circle at 40% 30%,#8ff07a,#2fae2c 60%,#1c6a1a);box-shadow:0 4px 0 #145214,0 0 0 4px #ffd23a}
 .lv:disabled{background:#ecdcc2;color:#c9b08c;box-shadow:0 3px 0 #d6bd94;border-color:#f7eedf;text-shadow:none;cursor:default}.lv:disabled::after{display:none}
 .credits{text-align:center;gap:4px}
@@ -210,7 +210,7 @@ body[data-ev="christmas"] #sleigh{display:block;animation:sleighRide 22s 3s line
 .infoHelp[hidden],.infoCred[hidden]{display:none}
 .steps{list-style:none;margin:8px 0 2px;padding:0;display:flex;flex-direction:column;gap:7px;width:100%;max-width:330px;text-align:left}
 .steps li{display:flex;align-items:center;gap:10px;font:600 15px var(--body);color:#3d2416}
-.steps b{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 30%,#ffb44a,#f2760a 60%,#a84a00);border:2px solid #fff;box-shadow:0 2px 0 #a84a00;text-shadow:0 1px 0 rgba(0,0,0,.25);color:#fff;font:400 16px var(--display)}
+.steps b{position:relative;flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 30%,#ffb44a,#f2760a 60%,#a84a00);border:2px solid #fff;box-shadow:0 2px 0 #a84a00;text-shadow:0 1px 0 rgba(0,0,0,.25);color:#fff;font:400 16px var(--display)}
 .infoHelp h3{margin:12px 0 2px;font:400 22px var(--display);color:#c2370f}.infoHelp h3.bad{color:#c3121b}
 .plist{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;max-width:400px}
 .prow{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;background:rgba(255,255,255,.6);border-radius:14px;padding:4px 6px 8px}
