@@ -27,6 +27,7 @@ body{height:100%;margin:0;background:var(--void);color:var(--ink);font-family:va
 #tipBox{position:absolute;left:0;top:0;pointer-events:none;background:rgba(61,36,22,.92);color:#fff;font-family:Fredoka,system-ui;font-weight:600;line-height:1.27;padding:.6em .93em;border-radius:.93em;text-align:center;white-space:nowrap;will-change:transform}
 #tipBox[hidden]{display:none}
 #game.gray{filter:grayscale(1) brightness(1.05)}
+#game.colorBack{transition:filter .8s ease}   /* a new record brings the colour back behind its card */
 
 #hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}
 #score{font-family:var(--display);font-size:52px;line-height:1;color:#ff9a1a;--sw:9px;--ss:rgba(60,20,90,.45);font-variant-numeric:tabular-nums}
@@ -1603,7 +1604,7 @@ function reset(from){
     acc:startLook(Math.floor(from/WIN_SCORE)),newAcc:null,ms:Math.floor(from/WIN_SCORE),streak:0,sz:1,boostLeft:0,boostWait:0});
   score = from; themeVal = Math.floor(from/10);
   camY = r0.y - H*.7; cloudTop = camY*.6 + H + 100;
-  cv.classList.remove("gray");
+  cv.classList.remove("gray","colorBack");
   scoreEl.textContent = score;
   // the cube floats up from below to its ring
   riseFrom = r0.y + H*1.5; riseT = 0; player.y = riseFrom;
@@ -1868,6 +1869,7 @@ $("shareE").addEventListener("click", ()=>shareResult(true));
 function finish(){
   const rec = endlessRecord();   // the panel celebrates, with the cheerful menu music
   state="over"; playMusic(rec ? "menu" : "over", true);
+  if(rec){ cv.classList.add("colorBack"); cv.classList.remove("gray"); }
   over.classList.toggle("record", rec); $("fRibbon").textContent = rec ? "New record!" : "Failed";
   $("fScore").textContent = score;
   $("fBest").textContent = endless ? endBest : best;
